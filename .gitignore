@@ -1,0 +1,21 @@
+__pycache__/
+venv/
+output/
+policy_drafter/config.py
+frontend/node_modules/
+.DS_Store
+*.env
+
+# Server management files
+.backend.pid
+.frontend.pid
+backend.log
+frontend.log
+nohup.out
+graph_outputs/
+frontend/node_modules/
+frontend/.next/
+contextual_search_outputs/
+impact_analysis_outputs/
+policy_drafter/config.py
+deploy.sh

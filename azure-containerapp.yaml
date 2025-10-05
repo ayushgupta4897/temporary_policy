@@ -1,0 +1,90 @@
+# Azure Container Apps Configuration
+# Policy Intelligence Platform Deployment
+
+apiVersion: 2023-05-01
+location: eastus
+name: policy-intelligence-app
+resourceGroup: rg-policy-intelligence-ai
+
+properties:
+  environmentId: /subscriptions/SUBSCRIPTION_ID/resourceGroups/rg-policy-intelligence-ai/providers/Microsoft.App/managedEnvironments/env-policy-intelligence
+  
+  configuration:
+    activeRevisionsMode: single
+    ingress:
+      external: true
+      targetPort: 3000
+      transport: auto
+      allowInsecure: false
+      traffic:
+        - weight: 100
+          latestRevision: true
+    
+    registries:
+      - server: crpolicyintelligence.azurecr.io
+        identity: /subscriptions/SUBSCRIPTION_ID/resourceGroups/rg-policy-intelligence-ai/providers/Microsoft.ManagedIdentity/userAssignedIdentities/id-policy-intelligence
+    
+    secrets:
+      - name: azure-storage-connection
+        value: "AZURE_STORAGE_CONNECTION_STRING_VALUE"
+      - name: registry-password
+        value: "REGISTRY_PASSWORD_VALUE"
+
+  template:
+    containers:
+      # Backend Container
+      - name: backend
+        image: crpolicyintelligence.azurecr.io/policy-backend:latest
+        env:
+          - name: AZURE_STORAGE_CONNECTION_STRING
+            secretRef: azure-storage-connection
+        resources:
+          cpu: 0.5
+          memory: 1.0Gi
+        probes:
+          - type: liveness
+            httpGet:
+              path: "/health"
+              port: 8000
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          - type: readiness
+            httpGet:
+              path: "/health" 
+              port: 8000
+            initialDelaySeconds: 5
+            periodSeconds: 5
+
+      # Frontend Container
+      - name: frontend
+        image: crpolicyintelligence.azurecr.io/policy-frontend:latest
+        env:
+          - name: NODE_ENV
+            value: "production"
+          - name: NEXT_PUBLIC_API_URL
+            value: "http://localhost:8000"
+        resources:
+          cpu: 0.25
+          memory: 0.5Gi
+        probes:
+          - type: liveness
+            httpGet:
+              path: "/"
+              port: 3000
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          - type: readiness
+            httpGet:
+              path: "/"
+              port: 3000
+            initialDelaySeconds: 5
+            periodSeconds: 5
+
+    scale:
+      minReplicas: 1
+      maxReplicas: 5
+      rules:
+        - name: http-scaling
+          http:
+            metadata:
+              concurrentRequests: "10"
