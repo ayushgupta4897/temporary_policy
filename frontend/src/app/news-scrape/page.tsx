@@ -83,8 +83,16 @@ function NewsScrapeContent() {
       <div className="max-w-[1800px] mx-auto px-4 py-8">
         <div className="mb-12">
           <h1 className="text-5xl font-bold mb-4 text-center">
-            <span className="bg-gradient-to-r from-gradient-from via-gradient-via to-gradient-to bg-clip-text text-transparent">
-              News Scrape
+            <span style={{
+              display: 'inline-block',
+              background: 'linear-gradient(to right, #A32020, #D93954, #D93954)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text',
+              paddingLeft: '4px',
+              paddingRight: '4px'
+            }}>
+              News Horizon
             </span>
           </h1>
           <p className="text-gray-400 text-center text-lg">
@@ -98,9 +106,9 @@ function NewsScrapeContent() {
             
             <div className="neural-card p-6">
               <h3 className="text-lg font-semibold text-gray-100 mb-4">
-                Recent Scrapes ({scrapes.length})
+                Recent Queries ({scrapes.length})
               </h3>
-              
+
               {isLoading ? (
                 <div className="space-y-3">
                   {[1, 2, 3].map(i => (
@@ -111,7 +119,7 @@ function NewsScrapeContent() {
                 </div>
               ) : scrapes.length === 0 ? (
                 <p className="text-gray-400 text-center py-8">
-                  No scrapes yet. Submit your first query above.
+                  No queries yet. Submit your first query above.
                 </p>
               ) : (
                 <div className="space-y-3 max-h-[600px] overflow-y-auto">
@@ -138,10 +146,10 @@ function NewsScrapeContent() {
                   </svg>
                 </div>
                 <h2 className="text-2xl font-semibold text-gray-100 mb-3">
-                  Select or Create a News Scrape
+                  Select or Create a Query
                 </h2>
                 <p className="text-gray-400 max-w-md mx-auto">
-                  Submit a query to scrape news across geographic hierarchies with AI-powered analysis and interactive maps.
+                  Submit a query to analyze news across geographic hierarchies with AI-powered insights and tag-based filtering.
                 </p>
               </div>
             ) : (

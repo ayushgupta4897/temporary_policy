@@ -31,7 +31,15 @@ export default function ContextualSearchForm({ onSubmit }: ContextualSearchFormP
           </svg>
         </div>
         <h1 className="text-4xl font-bold mb-4">
-          <span className="bg-gradient-to-r from-gradient-from to-gradient-to bg-clip-text text-transparent">
+          <span style={{
+              display: 'inline-block',
+              background: 'linear-gradient(to right, #A32020, #D93954)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text',
+              paddingLeft: '4px',
+              paddingRight: '4px'
+            }}>
             New Contextual Search
           </span>
         </h1>

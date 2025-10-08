@@ -242,7 +242,17 @@ export default function ReportsViewer({ query }: ReportsViewerProps) {
             <ReportSkeleton />
           ) : (
             <div id="report-content" className="custom-scrollbar bg-gray-50 rounded-lg p-6">
-              <MarkdownPreview 
+              <style jsx global>{`
+                #report-content h1,
+                #report-content h2,
+                #report-content h3,
+                #report-content h4,
+                #report-content h5,
+                #report-content h6 {
+                  color: #1f2937 !important;
+                }
+              `}</style>
+              <MarkdownPreview
                 source={reportContent}
                 style={{
                   backgroundColor: '#f9fafb',

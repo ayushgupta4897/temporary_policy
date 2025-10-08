@@ -49,19 +49,19 @@ export default function NewsCitationCard({ citation }: NewsCitationCardProps) {
               </a>
               
               <div className="flex items-center gap-2 flex-wrap text-sm">
-                <span className="font-medium text-gradient-from">{citation.publisher}</span>
-                
+                <span className="font-medium text-accent-red">{citation.publisher}</span>
+
                 {citation.author && (
                   <>
-                    <span className="text-gray-600">·</span>
-                    <span className="text-gray-400">{citation.author}</span>
+                    <span className="text-gray-400">·</span>
+                    <span className="text-gray-300">{citation.author}</span>
                   </>
                 )}
-                
+
                 {citation.article_type && (
                   <>
-                    <span className="text-gray-600">·</span>
-                    <span className="px-2 py-0.5 text-xs bg-dark-500/50 text-gray-400 rounded border border-dark-400/30">
+                    <span className="text-gray-400">·</span>
+                    <span className="px-2 py-0.5 text-xs bg-dark-500/50 text-gray-300 rounded border border-dark-400/30">
                       {citation.article_type.replace(/_/g, ' ')}
                     </span>
                   </>
@@ -95,7 +95,32 @@ export default function NewsCitationCard({ citation }: NewsCitationCardProps) {
           <p className="text-sm text-gray-300 leading-relaxed">
             {citation.summary}
           </p>
-          
+
+          {(citation.region || citation.country || citation.topics || citation.industry) && (
+            <div className="flex flex-wrap gap-2">
+              {(Array.isArray(citation.region) ? citation.region : citation.region ? [citation.region] : []).map((r: string) => (
+                <span key={r} className="px-2 py-1 bg-accent-maroon/20 text-accent-red border border-accent-maroon/30 rounded-md text-xs">
+                  {r}
+                </span>
+              ))}
+              {(Array.isArray(citation.country) ? citation.country : citation.country ? [citation.country] : []).map((c: string) => (
+                <span key={c} className="px-2 py-1 bg-accent-red/20 text-red-300 border border-accent-red/30 rounded-md text-xs">
+                  {c}
+                </span>
+              ))}
+              {citation.topics?.map((t: string) => (
+                <span key={t} className="px-2 py-1 bg-pink-500/20 text-pink-300 border border-pink-500/30 rounded-md text-xs">
+                  {t}
+                </span>
+              ))}
+              {citation.industry?.map((i: string) => (
+                <span key={i} className="px-2 py-1 bg-purple-500/20 text-purple-300 border border-purple-500/30 rounded-md text-xs">
+                  {i}
+                </span>
+              ))}
+            </div>
+          )}
+
           {citation.key_quote && (
             <div className="relative pl-4 py-2">
               <div className="absolute left-0 top-0 bottom-0 w-0.5 bg-gradient-to-b from-gradient-from to-gradient-via rounded-full" />

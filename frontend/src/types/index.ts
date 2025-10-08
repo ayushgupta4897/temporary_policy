@@ -191,8 +191,8 @@ export interface NewsCitation {
   date: string;
   summary: string;
   key_quote?: string;
-  country?: string;
-  region?: string;
+  country?: string | string[];
+  region?: string | string[];
   geography?: string;
   hierarchy_level?: string;
   sentiment_score?: number;
@@ -200,6 +200,8 @@ export interface NewsCitation {
   relevance_score?: number;
   article_type?: string;
   image_url?: string;
+  topics?: string[];
+  industry?: string[];
 }
 
 export interface ExecutiveSummary {

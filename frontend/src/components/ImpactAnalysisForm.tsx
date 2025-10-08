@@ -43,7 +43,15 @@ export default function ImpactAnalysisForm({ onSubmit }: ImpactAnalysisFormProps
     <div className="max-w-4xl mx-auto">
       <div className="text-center mb-12">
         <h1 className="text-4xl font-bold mb-4">
-          <span className="bg-gradient-to-r from-gradient-from to-gradient-to bg-clip-text text-transparent">
+          <span style={{
+              display: 'inline-block',
+              background: 'linear-gradient(to right, #A32020, #D93954)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text',
+              paddingLeft: '4px',
+              paddingRight: '4px'
+            }}>
             New Impact Analysis
           </span>
         </h1>

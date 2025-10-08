@@ -66,7 +66,7 @@ def get_enrichment_prompt(citations_batch: list) -> str:
         f"[{i+1}] {c.get('title', '')} - {c.get('publisher', '')}\n{c.get('summary', '')}"
         for i, c in enumerate(citations_batch)
     ])
-    
+
     return f"""Analyze these citations:
 
 {citations_text}
@@ -75,13 +75,21 @@ For each citation, provide:
 - trust_score: 0.0-1.0 (0.9-1.0=Reuters/BBC, 0.7-0.9=established, 0.5-0.7=trade, <0.5=blogs)
 - sentiment_score: 0.0-1.0 (0=negative, 0.5=neutral, 1.0=positive)
 - relevance_score: 0.0-1.0 (how relevant to query)
+- region: array of regions (GCC, MENA, Southeast Asia, North America, Europe, Asia Pacific, Latin America, Africa, Global)
+- country: array of countries mentioned or relevant
+- topics: array of main topics/themes (Economy, Energy, Technology, Policy, Trade, Finance, Climate, Infrastructure, etc)
+- industry: array of industries covered (Oil & Gas, Banking, Tech, Real Estate, Healthcare, Manufacturing, etc)
 
 Return JSON array with {len(citations_batch)} objects:
 [
   {{
     "trust_score": 0.9,
     "sentiment_score": 0.7,
-    "relevance_score": 0.85
+    "relevance_score": 0.85,
+    "region": ["GCC", "MENA"],
+    "country": ["Saudi Arabia", "UAE"],
+    "topics": ["Energy", "Policy"],
+    "industry": ["Oil & Gas"]
   }}
 ]
 

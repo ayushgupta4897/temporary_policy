@@ -176,7 +176,15 @@ export default function ContextualSearchViewer({ search, onRefresh }: Contextual
       {/* Header */}
       <div className="text-center">
         <h1 className="text-4xl font-bold mb-4">
-          <span className="bg-gradient-to-r from-gradient-from to-gradient-to bg-clip-text text-transparent">
+          <span style={{
+              display: 'inline-block',
+              background: 'linear-gradient(to right, #A32020, #D93954)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text',
+              paddingLeft: '4px',
+              paddingRight: '4px'
+            }}>
             {search.displayTitle || 'Search Results'}
           </span>
         </h1>

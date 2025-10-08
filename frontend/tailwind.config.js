@@ -8,68 +8,64 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        // Dark Grayish Theme with Maroon/Purple Undertones
+        // Strategy& Design System - Professional & Corporate
         'dark': {
-          50: '#4a4650',   // Dark gray with purple hint
-          100: '#3f3845',  // Dark gray with maroon
-          200: '#363139',  // Darker gray with purple
-          300: '#2e2a32',  // Dark gray with maroon
-          400: '#26222a',  // Darker gray with purple
-          500: '#1e1b22',  // Dark with maroon undertone
-          600: '#181520',  // Very dark with purple
-          700: '#141118',  // Very dark with maroon
-          800: '#0f0d12',  // Almost black with purple
-          900: '#0a090c',  // Light black with maroon
+          50: '#4d4d4d',   // Medium gray
+          100: '#404040',  // Charcoal gray
+          200: '#383838',  // Dark charcoal
+          300: '#333333',  // Strategy& dark gray
+          400: '#2b2b2b',  // Darker gray
+          500: '#242424',  // Very dark gray
+          600: '#1a1a1a',  // Almost black
+          700: '#141414',  // Near black
+          800: '#0d0d0d',  // Deep black
+          900: '#000000',  // Pure black (Strategy& primary)
         },
         'primary': {
           50: '#fef2f2',
-          100: '#fee2e2', 
+          100: '#fee2e2',
           200: '#fecaca',
           300: '#fca5a5',
           400: '#f87171',
           500: '#ef4444',
           600: '#dc2626',
-          700: '#7a1818', // Main burgundy - #7a1818
-          800: '#991b1b',
-          900: '#7f1d1d',
+          700: '#A32020', // Strategy& Maroon
+          800: '#D93954', // Strategy& Bright Red
+          900: '#8B1A1A',
         },
         'neutral': {
-          50: '#fafafa',
+          50: '#fafafa',   // Strategy& light bg
           100: '#f5f5f5',
           200: '#e5e5e5',
           300: '#d4d4d4',
           400: '#a3a3a3',
-          500: '#737373',
+          500: '#737373',  // Strategy& gray
           600: '#525252',
           700: '#404040',
-          800: '#262626',
+          800: '#262626',  // Strategy& dark
           900: '#171717',
         },
-        // Subtle Maroon/Purple Gradient colors
+        // Strategy& inspired gradient - Black to Maroon
         'gradient': {
-          from: '#A855F7',  // Purple
-          via: '#8B5CF6',   // Light Purple  
-          to: '#7A1818',    // Burgundy
+          from: '#000000',  // Pure Black
+          via: '#A32020',   // Strategy& Maroon
+          to: '#D93954',    // Strategy& Bright Red
         },
-        // Status colors - Brighter and more vibrant
+        // Status colors - Professional tones
         'status': {
-          'complete': '#22C55E',  // Bright Green
-          'running': '#FBBF24',   // Bright Amber
-          'error': '#F87171',     // Bright Red
-          'draft': '#9CA3AF',     // Light Gray
-          'needs-input': '#A78BFA', // Bright Purple
+          'complete': '#22C55E',  // Green
+          'running': '#F59E0B',   // Amber
+          'error': '#EF4444',     // Red
+          'draft': '#9CA3AF',     // Gray
+          'needs-input': '#D93954', // Strategy& Red
         },
-        // Policy Bot accent colors
-        'accent-pink': '#EA9696',
-        // Legacy colors for gradual migration
-        'strategy-burgundy': '#7a1818',
-        'strategy-light': '#fafafa',
-        'strategy-gray': '#737373',
-        'strategy-dark': '#262626',
+        // Strategy& Accent
+        'accent-red': '#D93954',
+        'accent-maroon': '#A32020',
       },
       fontFamily: {
-        'sans': ['Arial', 'Helvetica', 'sans-serif'],
-        'serif': ['Georgia', 'Times New Roman', 'serif'],
+        'sans': ['"Helvetica Neue"', 'Helvetica', 'Arial', 'sans-serif'],
+        'serif': ['"ITC Charter Com"', 'Georgia', '"Times New Roman"', 'serif'],
         'mono': ['Monaco', 'Consolas', 'monospace'],
       },
       fontSize: {
@@ -133,12 +129,12 @@ module.exports = {
           '50%': { transform: 'translateY(-10px)' },
         },
         neuralPulse: {
-          '0%, 100%': { 
-            boxShadow: '0 0 20px rgba(139, 92, 246, 0.3)',
+          '0%, 100%': {
+            boxShadow: '0 0 20px rgba(163, 32, 32, 0.3)',
             transform: 'scale(1)',
           },
-          '50%': { 
-            boxShadow: '0 0 40px rgba(168, 85, 247, 0.4)',
+          '50%': {
+            boxShadow: '0 0 40px rgba(217, 57, 84, 0.4)',
             transform: 'scale(1.02)',
           },
         },
@@ -157,11 +153,11 @@ module.exports = {
           },
         },
         glow: {
-          '0%': { 
-            boxShadow: '0 0 5px rgba(168, 85, 247, 0.2), 0 0 10px rgba(139, 92, 246, 0.1)',
+          '0%': {
+            boxShadow: '0 0 5px rgba(163, 32, 32, 0.3), 0 0 10px rgba(163, 32, 32, 0.2)',
           },
-          '100%': { 
-            boxShadow: '0 0 20px rgba(168, 85, 247, 0.4), 0 0 30px rgba(122, 24, 24, 0.2)',
+          '100%': {
+            boxShadow: '0 0 20px rgba(217, 57, 84, 0.5), 0 0 30px rgba(163, 32, 32, 0.3)',
           },
         },
         rotateSlow: {

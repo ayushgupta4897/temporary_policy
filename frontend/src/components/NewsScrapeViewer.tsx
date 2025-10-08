@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import { apiService } from '@/services/api';
 import NewsCitationCard from './NewsCitationCard';
 import LoadingSkeleton from './LoadingSkeleton';
+import AnalyticsDashboard from './analytics/AnalyticsDashboard';
 
 interface NewsScrapeViewerProps {
   scrape: NewsScrapeQuery;
@@ -14,8 +15,13 @@ interface NewsScrapeViewerProps {
 export default function NewsScrapeViewer({ scrape, onRefresh }: NewsScrapeViewerProps) {
   const [citations, setCitations] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [activeTab, setActiveTab] = useState<'citations' | 'analytics'>('citations');
   const [sortBy, setSortBy] = useState<'date' | 'relevance' | 'trust' | 'sentiment'>('date');
   const [filterKeyword, setFilterKeyword] = useState('');
+  const [selectedRegions, setSelectedRegions] = useState<string[]>([]);
+  const [selectedCountries, setSelectedCountries] = useState<string[]>([]);
+  const [selectedTopics, setSelectedTopics] = useState<string[]>([]);
+  const [selectedIndustries, setSelectedIndustries] = useState<string[]>([]);
 
   useEffect(() => {
     loadCitations();
@@ -31,13 +37,51 @@ export default function NewsScrapeViewer({ scrape, onRefresh }: NewsScrapeViewer
     setIsLoading(false);
   };
 
+  // Extract unique tags from all citations
+  const allRegions = Array.from(new Set(citations.flatMap(c => {
+    const region = c.region;
+    return Array.isArray(region) ? region : region ? [region] : [];
+  }))).sort();
+  const allCountries = Array.from(new Set(citations.flatMap(c => {
+    const country = c.country;
+    return Array.isArray(country) ? country : country ? [country] : [];
+  }))).sort();
+  const allTopics = Array.from(new Set(citations.flatMap(c => c.topics || []))).sort();
+  const allIndustries = Array.from(new Set(citations.flatMap(c => c.industry || []))).sort();
+
   const sortedAndFiltered = citations
     .filter(c => {
-      if (!filterKeyword) return true;
-      const keyword = filterKeyword.toLowerCase();
-      return c.title?.toLowerCase().includes(keyword) || 
-             c.summary?.toLowerCase().includes(keyword) ||
-             c.publisher?.toLowerCase().includes(keyword);
+      if (filterKeyword) {
+        const keyword = filterKeyword.toLowerCase();
+        const matchesKeyword = c.title?.toLowerCase().includes(keyword) ||
+               c.summary?.toLowerCase().includes(keyword) ||
+               c.publisher?.toLowerCase().includes(keyword);
+        if (!matchesKeyword) return false;
+      }
+
+      if (selectedRegions.length > 0) {
+        const regions = Array.isArray(c.region) ? c.region : c.region ? [c.region] : [];
+        const hasRegion = regions.some((r: string) => selectedRegions.includes(r));
+        if (!hasRegion) return false;
+      }
+
+      if (selectedCountries.length > 0) {
+        const countries = Array.isArray(c.country) ? c.country : c.country ? [c.country] : [];
+        const hasCountry = countries.some((co: string) => selectedCountries.includes(co));
+        if (!hasCountry) return false;
+      }
+
+      if (selectedTopics.length > 0) {
+        const hasTopic = c.topics?.some((t: string) => selectedTopics.includes(t));
+        if (!hasTopic) return false;
+      }
+
+      if (selectedIndustries.length > 0) {
+        const hasIndustry = c.industry?.some((i: string) => selectedIndustries.includes(i));
+        if (!hasIndustry) return false;
+      }
+
+      return true;
     })
     .sort((a, b) => {
       switch (sortBy) {
@@ -104,10 +148,10 @@ export default function NewsScrapeViewer({ scrape, onRefresh }: NewsScrapeViewer
               {scrape.query}
             </h2>
             <p className="text-gray-400 text-sm mt-1">
-              {scrape.status === 'done' && `${sortedAndFiltered.length} of ${citations.length} citations`}
+              {scrape.status === 'done' && activeTab === 'citations' && `${sortedAndFiltered.length} of ${citations.length} citations`}
             </p>
           </div>
-          
+
           <button
             onClick={onRefresh}
             className="px-4 py-2 bg-dark-600 hover:bg-dark-500 text-gray-300 rounded-lg transition-colors"
@@ -115,43 +159,169 @@ export default function NewsScrapeViewer({ scrape, onRefresh }: NewsScrapeViewer
             Refresh
           </button>
         </div>
-        
+
+        <div className="flex gap-2 mb-6 border-b border-dark-400/40">
+          <button
+            onClick={() => setActiveTab('citations')}
+            className={`px-6 py-3 font-medium transition-colors border-b-2 ${
+              activeTab === 'citations'
+                ? 'border-gradient-from text-white'
+                : 'border-transparent text-gray-400 hover:text-gray-300'
+            }`}
+          >
+            Citations
+          </button>
+          <button
+            onClick={() => setActiveTab('analytics')}
+            className={`px-6 py-3 font-medium transition-colors border-b-2 ${
+              activeTab === 'analytics'
+                ? 'border-gradient-from text-white'
+                : 'border-transparent text-gray-400 hover:text-gray-300'
+            }`}
+          >
+            Analytics
+          </button>
+        </div>
+
+        {activeTab === 'analytics' ? (
+          <AnalyticsDashboard queryId={scrape.queryId} />
+        ) : (
+          <>
+
         {scrape.status === 'done' && citations.length > 0 && (
-          <div className="flex items-center gap-4 mb-6 p-4 bg-dark-600/40 rounded-xl border border-dark-400/40">
-            <div className="flex items-center gap-2 flex-1">
-              <label className="text-sm font-medium text-gray-400">Sort by:</label>
-              <select
-                value={sortBy}
-                onChange={(e) => setSortBy(e.target.value as any)}
-                className="flex-1 px-3 py-2 bg-dark-700 border border-dark-400 rounded-lg text-gray-300 text-sm focus:outline-none focus:ring-2 focus:ring-gradient-from/50"
-              >
-                <option value="date">Date (Newest First)</option>
-                <option value="relevance">Relevance Score</option>
-                <option value="trust">Trust Score</option>
-                <option value="sentiment">Sentiment Score</option>
-              </select>
-            </div>
-            
-            <div className="flex items-center gap-2 flex-1">
-              <label className="text-sm font-medium text-gray-400">Filter:</label>
-              <input
-                type="text"
-                value={filterKeyword}
-                onChange={(e) => setFilterKeyword(e.target.value)}
-                placeholder="Search in title, summary, publisher..."
-                className="flex-1 px-3 py-2 bg-dark-700 border border-dark-400 rounded-lg text-gray-300 text-sm placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-gradient-from/50"
-              />
-              {filterKeyword && (
-                <button
-                  onClick={() => setFilterKeyword('')}
-                  className="px-2 py-1 text-gray-400 hover:text-gray-300 text-lg"
-                  title="Clear filter"
+          <>
+            <div className="flex items-center gap-4 mb-4 p-4 bg-dark-600/40 rounded-xl border border-dark-400/40">
+              <div className="flex items-center gap-2 flex-1">
+                <label className="text-sm font-medium text-gray-400">Sort by:</label>
+                <select
+                  value={sortBy}
+                  onChange={(e) => setSortBy(e.target.value as any)}
+                  className="flex-1 px-3 py-2 bg-dark-700 border border-dark-400 rounded-lg text-gray-300 text-sm focus:outline-none focus:ring-2 focus:ring-gradient-from/50"
                 >
-                  ✗
-                </button>
-              )}
+                  <option value="date">Date (Newest First)</option>
+                  <option value="relevance">Relevance Score</option>
+                  <option value="trust">Trust Score</option>
+                  <option value="sentiment">Sentiment Score</option>
+                </select>
+              </div>
+
+              <div className="flex items-center gap-2 flex-1">
+                <label className="text-sm font-medium text-gray-400">Search:</label>
+                <input
+                  type="text"
+                  value={filterKeyword}
+                  onChange={(e) => setFilterKeyword(e.target.value)}
+                  placeholder="Title, summary, publisher..."
+                  className="flex-1 px-3 py-2 bg-dark-700 border border-dark-400 rounded-lg text-gray-300 text-sm placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-gradient-from/50"
+                />
+                {filterKeyword && (
+                  <button
+                    onClick={() => setFilterKeyword('')}
+                    className="px-2 py-1 text-gray-400 hover:text-gray-300 text-lg"
+                    title="Clear filter"
+                  >
+                    ✗
+                  </button>
+                )}
+              </div>
             </div>
-          </div>
+
+            <div className="grid grid-cols-4 gap-4 mb-6 p-4 bg-dark-600/40 rounded-xl border border-dark-400/40">
+              <div>
+                <label className="text-sm font-medium text-gray-400 mb-2 block">Region</label>
+                <select
+                  multiple
+                  value={selectedRegions}
+                  onChange={(e) => setSelectedRegions(Array.from(e.target.selectedOptions, opt => opt.value))}
+                  className="w-full px-3 py-2 bg-dark-700 border border-dark-400 rounded-lg text-gray-300 text-sm focus:outline-none focus:ring-2 focus:ring-gradient-from/50 min-h-[100px]"
+                >
+                  {allRegions.map(region => (
+                    <option key={region} value={region}>{region}</option>
+                  ))}
+                </select>
+              </div>
+
+              <div>
+                <label className="text-sm font-medium text-gray-400 mb-2 block">Country</label>
+                <select
+                  multiple
+                  value={selectedCountries}
+                  onChange={(e) => setSelectedCountries(Array.from(e.target.selectedOptions, opt => opt.value))}
+                  className="w-full px-3 py-2 bg-dark-700 border border-dark-400 rounded-lg text-gray-300 text-sm focus:outline-none focus:ring-2 focus:ring-gradient-from/50 min-h-[100px]"
+                >
+                  {allCountries.map(country => (
+                    <option key={country} value={country}>{country}</option>
+                  ))}
+                </select>
+              </div>
+
+              <div>
+                <label className="text-sm font-medium text-gray-400 mb-2 block">Topics</label>
+                <select
+                  multiple
+                  value={selectedTopics}
+                  onChange={(e) => setSelectedTopics(Array.from(e.target.selectedOptions, opt => opt.value))}
+                  className="w-full px-3 py-2 bg-dark-700 border border-dark-400 rounded-lg text-gray-300 text-sm focus:outline-none focus:ring-2 focus:ring-gradient-from/50 min-h-[100px]"
+                >
+                  {allTopics.map(topic => (
+                    <option key={topic} value={topic}>{topic}</option>
+                  ))}
+                </select>
+              </div>
+
+              <div>
+                <label className="text-sm font-medium text-gray-400 mb-2 block">Industry</label>
+                <select
+                  multiple
+                  value={selectedIndustries}
+                  onChange={(e) => setSelectedIndustries(Array.from(e.target.selectedOptions, opt => opt.value))}
+                  className="w-full px-3 py-2 bg-dark-700 border border-dark-400 rounded-lg text-gray-300 text-sm focus:outline-none focus:ring-2 focus:ring-gradient-from/50 min-h-[100px]"
+                >
+                  {allIndustries.map(industry => (
+                    <option key={industry} value={industry}>{industry}</option>
+                  ))}
+                </select>
+              </div>
+            </div>
+
+            {(selectedRegions.length > 0 || selectedCountries.length > 0 || selectedTopics.length > 0 || selectedIndustries.length > 0) && (
+              <div className="mb-4 p-3 bg-dark-600/40 rounded-lg border border-dark-400/40 flex items-center justify-between">
+                <div className="flex flex-wrap gap-2">
+                  {selectedRegions.map(r => (
+                    <span key={r} className="px-2 py-1 bg-gradient-from/20 text-gradient-from rounded text-xs">
+                      {r}
+                    </span>
+                  ))}
+                  {selectedCountries.map(c => (
+                    <span key={c} className="px-2 py-1 bg-gradient-via/20 text-gradient-via rounded text-xs">
+                      {c}
+                    </span>
+                  ))}
+                  {selectedTopics.map(t => (
+                    <span key={t} className="px-2 py-1 bg-gradient-to/20 text-gradient-to rounded text-xs">
+                      {t}
+                    </span>
+                  ))}
+                  {selectedIndustries.map(i => (
+                    <span key={i} className="px-2 py-1 bg-purple-500/20 text-purple-400 rounded text-xs">
+                      {i}
+                    </span>
+                  ))}
+                </div>
+                <button
+                  onClick={() => {
+                    setSelectedRegions([]);
+                    setSelectedCountries([]);
+                    setSelectedTopics([]);
+                    setSelectedIndustries([]);
+                  }}
+                  className="text-sm text-gray-400 hover:text-gray-300 underline"
+                >
+                  Clear All
+                </button>
+              </div>
+            )}
+          </>
         )}
 
         {isLoading ? (
@@ -166,6 +336,8 @@ export default function NewsScrapeViewer({ scrape, onRefresh }: NewsScrapeViewer
           <p className="text-gray-400 text-center py-8">No citations match your filter</p>
         ) : (
           <p className="text-gray-400 text-center py-8">No citations found</p>
+        )}
+          </>
         )}
       </div>
     </div>

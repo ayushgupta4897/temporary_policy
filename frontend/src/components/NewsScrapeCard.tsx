@@ -59,9 +59,7 @@ export default function NewsScrapeCard({ scrape, isSelected, onClick, onDelete }
       }`}
     >
       <div className="flex items-start justify-between mb-3">
-        <h3 className={`font-medium text-sm flex-1 mr-2 ${
-          isSelected ? 'text-gradient-from' : 'text-white'
-        }`}>
+        <h3 className="font-medium text-sm flex-1 mr-2 text-white">
           {scrape.query}
         </h3>
         <div className="flex items-center gap-2">

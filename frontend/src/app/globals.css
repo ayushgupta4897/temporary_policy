@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Strategy& PWC Design System - Inspired by professional consulting aesthetics */
+/* Strategy& Design System - Professional Consulting Aesthetics */
 @layer base {
   * {
     @apply box-border;
@@ -10,31 +10,31 @@
 
   html {
     @apply font-sans scroll-smooth;
-    font-feature-settings: 'cv11', 'ss01';
-    font-variation-settings: 'opsz' 32;
+    font-feature-settings: normal;
   }
 
   body {
-    @apply text-gray-100 antialiased;
-    font-family: Arial, Calibri, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-    letter-spacing: 0.02em;
+    @apply text-neutral-50 antialiased;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    letter-spacing: 0.01em;
     line-height: 1.6;
-    background: linear-gradient(135deg, #0a090c 0%, #141118 30%, #1e1b22 60%, #26222a 100%);
+    background: linear-gradient(135deg, #000000 0%, #1a1a1a 25%, #2b2b2b 50%, #333333 75%, #1a1a1a 100%);
     background-attachment: fixed;
     min-height: 100vh;
   }
 
-  /* Typography - Georgia for headers, Arial for body */
+  /* Typography - ITC Charter/Georgia for headers, Helvetica for body */
   h1, h2, h3, h4, h5, h6 {
     @apply font-serif font-normal tracking-tight;
+    color: #fafafa;
   }
 
-  h1 { @apply text-4xl lg:text-5xl text-primary-700; }
-  h2 { @apply text-3xl lg:text-4xl text-primary-700; }
-  h3 { @apply text-2xl lg:text-3xl text-neutral-900; }
-  h4 { @apply text-xl lg:text-2xl text-neutral-900; }
-  h5 { @apply text-lg lg:text-xl text-neutral-800; }
-  h6 { @apply text-base lg:text-lg text-neutral-700; }
+  h1 { @apply text-4xl lg:text-5xl; }
+  h2 { @apply text-3xl lg:text-4xl; }
+  h3 { @apply text-2xl lg:text-3xl text-neutral-100; }
+  h4 { @apply text-xl lg:text-2xl text-neutral-100; }
+  h5 { @apply text-lg lg:text-xl text-neutral-200; }
+  h6 { @apply text-base lg:text-lg text-neutral-300; }
 
   p, li, span {
     @apply font-sans;
@@ -47,101 +47,100 @@
 }
 
 @layer components {
-  /* Dark Card Components with Maroon/Purple Undertones */
+  /* Strategy& Card Components - Clean & Professional */
   .pwc-card {
-    @apply backdrop-blur-sm border rounded-xl shadow-lg transition-all duration-500 ease-out;
-    @apply hover:shadow-xl hover:-translate-y-2 hover:scale-[1.02];
-    background: linear-gradient(145deg, rgba(46, 42, 50, 0.95), rgba(38, 34, 42, 0.9));
-    border: 1px solid rgba(74, 70, 80, 0.4);
-    box-shadow: 
-      0 4px 6px -1px rgba(0, 0, 0, 0.4),
-      0 2px 4px -1px rgba(0, 0, 0, 0.3),
-      inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    @apply backdrop-blur-sm border rounded-xl shadow-lg transition-all duration-300 ease-out;
+    @apply hover:shadow-xl hover:-translate-y-1;
+    background: linear-gradient(145deg, rgba(51, 51, 51, 0.8), rgba(26, 26, 26, 0.9));
+    border: 1px solid rgba(163, 32, 32, 0.3);
+    box-shadow:
+      0 4px 6px -1px rgba(0, 0, 0, 0.5),
+      0 2px 4px -1px rgba(0, 0, 0, 0.4);
   }
-  
-  /* Accent Card with Enhanced Maroon/Purple */
+
+  /* Accent Card with Strategy& Maroon */
   .neural-card {
     @apply pwc-card;
-    background: linear-gradient(145deg, 
-      rgba(30, 27, 34, 0.95), 
-      rgba(20, 21, 32, 0.9)
+    background: linear-gradient(145deg,
+      rgba(43, 43, 43, 0.9),
+      rgba(20, 20, 20, 0.95)
     );
-    border: 1px solid rgba(168, 85, 247, 0.4);
-    animation: neural-pulse 4s ease-in-out infinite;
+    border: 1px solid rgba(163, 32, 32, 0.5);
+    box-shadow:
+      0 4px 6px -1px rgba(0, 0, 0, 0.5),
+      0 2px 4px -1px rgba(163, 32, 32, 0.3);
   }
 
   .pwc-card-elevated {
-    @apply backdrop-blur-lg border rounded-xl shadow-xl transition-all duration-500 ease-out;
-    @apply hover:shadow-2xl hover:-translate-y-3;
-    background: linear-gradient(145deg, 
-      rgba(30, 27, 34, 0.95), 
-      rgba(20, 21, 32, 0.9)
+    @apply backdrop-blur-lg border rounded-xl shadow-xl transition-all duration-300 ease-out;
+    @apply hover:shadow-2xl hover:-translate-y-2;
+    background: linear-gradient(145deg,
+      rgba(38, 38, 38, 0.95),
+      rgba(20, 20, 20, 0.9)
     );
-    border: 1px solid rgba(168, 85, 247, 0.3);
-    box-shadow: 
-      0 10px 15px -3px rgba(0, 0, 0, 0.5),
-      0 4px 6px -2px rgba(0, 0, 0, 0.4),
-      inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(163, 32, 32, 0.4);
+    box-shadow:
+      0 10px 15px -3px rgba(0, 0, 0, 0.6),
+      0 4px 6px -2px rgba(163, 32, 32, 0.2);
   }
 
   /* Dark Glass Card */
   .pwc-card-glass {
-    @apply backdrop-blur-xl border rounded-2xl shadow-2xl transition-all duration-500 ease-out;
-    @apply hover:shadow-2xl hover:-translate-y-2;
-    background: linear-gradient(145deg, 
-      rgba(38, 34, 42, 0.6),
-      rgba(30, 27, 34, 0.4)
+    @apply backdrop-blur-xl border rounded-xl shadow-lg transition-all duration-300 ease-out;
+    @apply hover:shadow-xl hover:-translate-y-1;
+    background: linear-gradient(145deg,
+      rgba(51, 51, 51, 0.7),
+      rgba(38, 38, 38, 0.5)
     );
     backdrop-filter: blur(20px);
-    border: 1px solid rgba(168, 85, 247, 0.2);
+    border: 1px solid rgba(163, 32, 32, 0.25);
   }
 
-  /* Data Flow Animation Background */
+  /* Data Flow Animation Background - Strategy& Maroon */
   .data-flow-bg {
-    background: linear-gradient(90deg, 
+    background: linear-gradient(90deg,
       transparent 0%,
-      rgba(168, 85, 247, 0.15) 20%,
-      rgba(139, 92, 246, 0.15) 50%,
-      rgba(122, 24, 24, 0.15) 80%,
+      rgba(163, 32, 32, 0.2) 20%,
+      rgba(217, 57, 84, 0.2) 50%,
+      rgba(163, 32, 32, 0.2) 80%,
       transparent 100%
     );
     background-size: 200% 100%;
     animation: data-flow 4s linear infinite;
   }
 
-  /* Button System */
+  /* Button System - Strategy& Style */
   .btn {
     @apply inline-flex items-center justify-center px-6 py-3 text-sm font-medium rounded-lg;
-    @apply transition-all duration-200 ease-out transform-gpu;
+    @apply transition-all duration-200 ease-out;
     @apply focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed;
     @apply active:scale-[0.98];
   }
 
   .btn-primary {
-    @apply btn text-white shadow-lg;
-    @apply hover:shadow-xl hover:-translate-y-1 hover:scale-[1.02];
-    @apply focus:ring-gradient-from;
-    background: linear-gradient(135deg, theme('colors.gradient.from'), theme('colors.gradient.via'), theme('colors.gradient.to'));
-    background-size: 200% 100%;
-    animation: glow 3s ease-in-out infinite alternate;
+    @apply btn text-white shadow-md;
+    @apply hover:shadow-lg hover:-translate-y-0.5;
+    @apply focus:ring-primary-700;
+    background: linear-gradient(135deg, #A32020 0%, #D93954 100%);
   }
 
   .btn-secondary {
-    @apply btn bg-dark-700 text-gradient-from border border-gradient-from;
-    @apply hover:bg-dark-600 hover:shadow-sm hover:border-gradient-via;
+    @apply btn bg-dark-300 text-neutral-50 border border-dark-100;
+    @apply hover:bg-dark-200 hover:shadow-sm;
     @apply focus:ring-primary-700;
   }
 
   .btn-ghost {
-    @apply btn text-gray-400;
-    @apply hover:text-gray-100 hover:bg-dark-600/50;
+    @apply btn text-neutral-300;
+    @apply hover:text-neutral-50 hover:bg-dark-300/50;
     @apply focus:ring-neutral-500;
   }
 
-  /* Dark Input System */
+  /* Input System - Strategy& Style */
   .input {
-    @apply w-full px-4 py-3 bg-dark-500/80 text-gray-100 border border-dark-300/50 rounded-lg focus:ring-2 focus:ring-gradient-from focus:border-gradient-from transition-colors duration-200;
-    font-family: Georgia, 'Times New Roman', serif;
+    @apply w-full px-4 py-3 bg-dark-400/70 text-neutral-50 border border-dark-200 rounded-lg;
+    @apply focus:ring-2 focus:ring-primary-700 focus:border-primary-700 transition-colors duration-200;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-size: 16px;
     line-height: 1.6;
     backdrop-filter: blur(8px);
@@ -149,24 +148,24 @@
 
   .textarea {
     @apply input resize-none min-h-[120px];
-    font-family: Georgia, 'Times New Roman', serif;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   }
 
-  /* Status Indicators */
+  /* Status Indicators - Strategy& Style */
   .status-badge {
-    @apply inline-flex items-center px-3 py-1 rounded-full text-xs font-medium;
+    @apply inline-flex items-center px-3 py-1 rounded-md text-xs font-medium;
   }
 
   .status-processing {
-    @apply status-badge bg-amber-100 text-amber-800;
+    @apply status-badge bg-amber-900/30 text-amber-400 border border-amber-700/50;
   }
 
   .status-done {
-    @apply status-badge bg-green-100 text-green-800;
+    @apply status-badge bg-green-900/30 text-green-400 border border-green-700/50;
   }
 
   .status-failed {
-    @apply status-badge bg-red-100 text-red-800;
+    @apply status-badge bg-red-900/30 text-red-400 border border-red-700/50;
   }
 
   /* Professional Layout Components */
@@ -178,90 +177,90 @@
     @apply py-12 lg:py-16;
   }
 
-  /* Enhanced Markdown Styling */
+  /* Enhanced Markdown Styling - Strategy& */
   .markdown-viewer {
     @apply prose prose-lg max-w-none;
-    
+
     /* Headers */
-    --tw-prose-headings: theme('colors.primary.700');
-    --tw-prose-h1: theme('colors.primary.700');
-    --tw-prose-h2: theme('colors.primary.700');
-    --tw-prose-h3: theme('colors.neutral.900');
-    --tw-prose-h4: theme('colors.neutral.900');
-    
+    --tw-prose-headings: theme('colors.neutral.50');
+    --tw-prose-h1: theme('colors.neutral.50');
+    --tw-prose-h2: theme('colors.neutral.50');
+    --tw-prose-h3: theme('colors.neutral.100');
+    --tw-prose-h4: theme('colors.neutral.100');
+
     /* Body text */
-    --tw-prose-body: theme('colors.neutral.700');
-    --tw-prose-p: theme('colors.neutral.700');
-    --tw-prose-li: theme('colors.neutral.700');
-    
+    --tw-prose-body: theme('colors.neutral.200');
+    --tw-prose-p: theme('colors.neutral.200');
+    --tw-prose-li: theme('colors.neutral.200');
+
     /* Links */
     --tw-prose-links: theme('colors.primary.700');
     --tw-prose-link-hover: theme('colors.primary.800');
-    
+
     /* Code */
-    --tw-prose-code: theme('colors.neutral.800');
+    --tw-prose-code: theme('colors.neutral.100');
     --tw-prose-pre-code: theme('colors.neutral.100');
-    --tw-prose-pre-bg: theme('colors.neutral-800');
-    
+    --tw-prose-pre-bg: theme('colors.dark.600');
+
     /* Quotes */
-    --tw-prose-quotes: theme('colors.neutral.600');
-    --tw-prose-quote-borders: theme('colors.primary.300');
-    
+    --tw-prose-quotes: theme('colors.neutral.300');
+    --tw-prose-quote-borders: theme('colors.primary.700');
+
     /* Tables */
-    --tw-prose-th-borders: theme('colors.neutral.300');
-    --tw-prose-td-borders: theme('colors.neutral.200');
-    
+    --tw-prose-th-borders: theme('colors.dark.300');
+    --tw-prose-td-borders: theme('colors.dark.400');
+
     /* Customize specific elements */
     h1, h2, h3, h4, h5, h6 {
       @apply font-serif;
     }
-    
+
     p, li, td, th {
       @apply font-sans;
     }
-    
+
     blockquote {
-      @apply border-l-4 border-primary-300 bg-primary-50 not-italic;
+      @apply border-l-4 border-primary-700 bg-dark-300/30 not-italic;
     }
-    
+
     code {
-      @apply bg-neutral-100 text-neutral-800 px-1.5 py-0.5 rounded text-sm;
+      @apply bg-dark-300/50 text-neutral-100 px-1.5 py-0.5 rounded text-sm;
     }
-    
+
     pre {
-      @apply bg-neutral-900 text-neutral-100 rounded-lg;
+      @apply bg-dark-600 text-neutral-100 rounded-lg;
     }
-    
+
     pre code {
       @apply bg-transparent text-neutral-100 p-0;
     }
-    
+
     table {
       @apply border-collapse w-full;
     }
-    
+
     th {
-      @apply bg-dark-600/60 font-semibold text-gray-100;
+      @apply bg-dark-300/60 font-semibold text-neutral-50;
     }
-    
+
     td {
-      @apply border-t border-dark-500/30;
+      @apply border-t border-dark-400/30 text-neutral-200;
     }
   }
 
-  /* Loading States */
+  /* Loading States - Strategy& */
   .loading-spinner {
-    @apply animate-spin rounded-full h-6 w-6 border-2 border-gray-600 border-t-gradient-from;
+    @apply animate-spin rounded-full h-6 w-6 border-2 border-dark-300 border-t-primary-700;
   }
 
   .loading-pulse {
-    @apply animate-pulse bg-neutral-200 rounded;
+    @apply animate-pulse bg-dark-300 rounded;
   }
 
-  /* Scrollbar Styling */
+  /* Scrollbar Styling - Strategy& */
   .custom-scrollbar {
     scrollbar-width: thin;
-    scrollbar-color: theme('colors.neutral.400') theme('colors.neutral.100');
+    scrollbar-color: theme('colors.dark.300') theme('colors.dark.600');
   }
 
   .custom-scrollbar::-webkit-scrollbar {
@@ -269,16 +268,16 @@
   }
 
   .custom-scrollbar::-webkit-scrollbar-track {
-    background: theme('colors.neutral.100');
+    background: theme('colors.dark.600');
   }
 
   .custom-scrollbar::-webkit-scrollbar-thumb {
-    background-color: theme('colors.neutral.400');
+    background-color: theme('colors.dark.300');
     border-radius: 3px;
   }
 
   .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-    background-color: theme('colors.neutral.500');
+    background-color: theme('colors.primary.700');
   }
 }
 
@@ -322,11 +321,22 @@
     @apply focus:outline-none focus:ring-2 focus:ring-primary-700 focus:ring-offset-2;
   }
 
-  /* UIW Markdown Preview Styling */
+  /* Gradient text utility - prevents first letter fade */
+  .gradient-text {
+    display: inline-block;
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+    background-clip: text !important;
+    color: transparent !important;
+    text-fill-color: transparent !important;
+    padding: 0 2px;
+  }
+
+  /* UIW Markdown Preview Styling - Strategy& */
   .w-md-editor-preview {
     background-color: transparent !important;
-    color: theme('colors.neutral.700') !important;
-    font-family: Arial, Helvetica, sans-serif !important;
+    color: theme('colors.neutral.200') !important;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
   }
 
   .w-md-editor-preview h1,
@@ -335,8 +345,8 @@
   .w-md-editor-preview h4,
   .w-md-editor-preview h5,
   .w-md-editor-preview h6 {
-    color: theme('colors.primary.700') !important;
-    font-family: Georgia, 'Times New Roman', serif !important;
+    color: theme('colors.neutral.50') !important;
+    font-family: "ITC Charter Com", Georgia, 'Times New Roman', serif !important;
     font-weight: 600 !important;
     margin-top: 2rem !important;
     margin-bottom: 1rem !important;
@@ -376,36 +386,37 @@
     width: 100% !important;
     border-collapse: collapse !important;
     margin: 1.5rem 0 !important;
-    border: 1px solid theme('colors.neutral.200') !important;
+    border: 1px solid theme('colors.dark.300') !important;
     border-radius: 0.5rem !important;
     overflow: hidden !important;
   }
 
   .w-md-editor-preview th {
-    background-color: theme('colors.neutral.50') !important;
-    color: theme('colors.neutral.900') !important;
+    background-color: theme('colors.dark.300') !important;
+    color: theme('colors.neutral.50') !important;
     font-weight: 600 !important;
     padding: 0.75rem 1rem !important;
     text-align: left !important;
-    border-bottom: 1px solid theme('colors.neutral.200') !important;
+    border-bottom: 1px solid theme('colors.dark.400') !important;
   }
 
   .w-md-editor-preview td {
     padding: 0.75rem 1rem !important;
-    border-bottom: 1px solid theme('colors.neutral.100') !important;
+    border-bottom: 1px solid theme('colors.dark.400') !important;
+    color: theme('colors.neutral.200') !important;
   }
 
   .w-md-editor-preview blockquote {
-    border-left: 4px solid theme('colors.primary.300') !important;
-    background-color: theme('colors.primary.50') !important;
+    border-left: 4px solid theme('colors.primary.700') !important;
+    background-color: theme('colors.dark.300') !important;
     padding: 1rem !important;
     margin: 1.5rem 0 !important;
     border-radius: 0 0.5rem 0.5rem 0 !important;
   }
 
   .w-md-editor-preview code {
-    background-color: theme('colors.neutral.100') !important;
-    color: theme('colors.neutral.800') !important;
+    background-color: theme('colors.dark.300') !important;
+    color: theme('colors.neutral.100') !important;
     padding: 0.25rem 0.5rem !important;
     border-radius: 0.25rem !important;
     font-size: 0.875rem !important;
@@ -413,7 +424,7 @@
   }
 
   .w-md-editor-preview pre {
-    background-color: theme('colors.neutral.900') !important;
+    background-color: theme('colors.dark.600') !important;
     color: theme('colors.neutral.100') !important;
     padding: 1rem !important;
     border-radius: 0.5rem !important;

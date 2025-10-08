@@ -132,7 +132,15 @@ export default function ImpactAnalysisPage() {
       <div className="space-y-8">
         <div className="text-center py-12">
           <h1 className="text-5xl font-bold mb-4">
-            <span className="bg-gradient-to-r from-gradient-from to-gradient-to bg-clip-text text-transparent">
+            <span style={{
+              display: 'inline-block',
+              background: 'linear-gradient(to right, #A32020, #D93954)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text',
+              paddingLeft: '4px',
+              paddingRight: '4px'
+            }}>
               Impact Evaluator
             </span>
             <span className="ml-4 px-3 py-1 text-sm font-medium bg-gradient-to-r from-blue-500/80 to-purple-500/80 text-white rounded-full border border-blue-400/30">

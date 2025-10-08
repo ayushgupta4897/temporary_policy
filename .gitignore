@@ -19,3 +19,4 @@ contextual_search_outputs/
 impact_analysis_outputs/
 policy_drafter/config.py
 deploy.sh
+deploy-update.sh

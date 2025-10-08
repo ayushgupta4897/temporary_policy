@@ -165,7 +165,15 @@ export default function Dashboard() {
         {/* Hero Section */}
         <div className="text-center py-12">
           <h1 className="text-5xl font-bold mb-4">
-            <span className="bg-gradient-to-r from-gradient-from to-gradient-to bg-clip-text text-transparent">
+            <span style={{
+              display: 'inline-block',
+              background: 'linear-gradient(to right, #A32020, #D93954)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text',
+              paddingLeft: '4px',
+              paddingRight: '4px'
+            }}>
               Policy Bot
             </span>
           </h1>
@@ -174,7 +182,7 @@ export default function Dashboard() {
           </p>
           <button
             onClick={() => setShowNewAnalysis(true)}
-            className="px-8 py-4 bg-gradient-to-r from-gradient-from to-gradient-to text-white font-medium rounded-lg hover:opacity-90 transition-opacity text-lg flex items-center gap-2 mx-auto"
+            className="px-8 py-4 bg-gradient-from text-white font-medium rounded-lg hover:bg-[#8B1A1A] transition-colors text-lg flex items-center gap-2 mx-auto"
           >
             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />

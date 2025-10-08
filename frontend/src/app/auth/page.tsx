@@ -63,27 +63,35 @@ function AuthForm() {
               <PolicyIcon className="text-white" size="xl" />
             </div>
             <h1 className="text-4xl lg:text-5xl font-bold mb-4 animate-scale-breath">
-              <span className="bg-gradient-to-r from-gradient-from via-gradient-via to-gradient-to bg-clip-text text-transparent">
-                {redirect === 'graph-builder' 
-                  ? 'System Compass' 
+              <span style={{
+                display: 'inline-block',
+                background: 'linear-gradient(to right, #A32020, #D93954, #D93954)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                backgroundClip: 'text',
+                paddingLeft: '4px',
+                paddingRight: '4px'
+              }}>
+                {redirect === 'graph-builder'
+                  ? 'System Compass'
                   : redirect === 'contextual-search'
                   ? 'Contextual Web Search'
                   : redirect === 'impact-analysis'
                   ? 'Impact Evaluator'
                   : redirect === 'news-scrape'
-                  ? 'News Scrape'
+                  ? 'News Horizon'
                   : 'Policy Bot'}
               </span>
             </h1>
             <p className="text-gray-300 text-lg font-medium mb-4">
-              {redirect === 'graph-builder' 
+              {redirect === 'graph-builder'
                 ? 'Map complex social systems with data-driven causal relationships'
                 : redirect === 'contextual-search'
                 ? 'Extract comprehensive evidence across 30 source tiers for research excellence'
                 : redirect === 'impact-analysis'
                 ? 'Quantify the real-world impact of policies with evidence-based multiplier calculations'
                 : redirect === 'news-scrape'
-                ? 'Exhaustive news intelligence across geographic hierarchies with AI-powered analysis'
+                ? 'Exhaustive news intelligence with AI-powered tag-based filtering and analysis'
                 : 'AI-powered policy research, benchmarking and implementation planning for smarter policy decisions'}
             </p>
             <p className="text-sm text-gray-400 max-w-md mx-auto">
