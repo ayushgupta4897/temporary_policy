@@ -919,7 +919,8 @@ def generate_html_visualization(graph_json: Dict, query_id: str = "", api_base_u
         taxonomy_count=len(type_counts),
         taxonomy_section=legend_html,
         graph_json=json.dumps(graph_json),
-        query_id=query_id
+        query_id=query_id,
+        api_base_url=api_base_url
     )
 
     return formatted_html
