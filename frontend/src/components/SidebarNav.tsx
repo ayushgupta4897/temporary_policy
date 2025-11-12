@@ -39,11 +39,11 @@ const SidebarNav: FC<SidebarNavProps> = ({ onNewAnalysis, onHomeClick }) => {
   const router = useRouter();
   
   const handleHomeClick = () => {
-    // If onHomeClick is provided, use it; otherwise just navigate
+    // If onHomeClick is provided, use it; otherwise navigate to homepage
     if (onHomeClick) {
       onHomeClick();
-    } else if (pathname !== '/dashboard') {
-      router.push('/dashboard');
+    } else {
+      router.push('/');
     }
   };
   
@@ -61,19 +61,19 @@ const SidebarNav: FC<SidebarNavProps> = ({ onNewAnalysis, onHomeClick }) => {
   ];
 
   return (
-    <aside className="w-64 bg-dark-700/40 backdrop-blur-xl border-r border-dark-300/50 h-screen overflow-y-auto relative z-20">
+    <aside className="w-64 flex-shrink-0 bg-dark-700/40 backdrop-blur-xl border-r border-dark-300/50 h-screen overflow-y-auto relative z-20">
       {/* Logo Section */}
       <div className="p-6 border-b border-dark-300/40">
         <button 
           onClick={handleHomeClick}
           className="flex items-center gap-3 group cursor-pointer w-full text-left"
         >
-          <div className="w-10 h-10 bg-gradient-to-br from-gradient-from to-gradient-via rounded-xl flex items-center justify-center group-hover:scale-105 transition-all duration-300 animate-neural-pulse shadow-lg">
-            <span className="text-white font-bold text-sm">PB</span>
+          <div className="w-10 h-10 bg-strategyand-maroon rounded flex items-center justify-center group-hover:scale-105 transition-all duration-200 shadow-md">
+            <span className="text-white font-serif text-2xl font-bold">&</span>
           </div>
           <div>
-            <h1 className="text-gray-100 font-semibold text-base group-hover:text-gradient-from transition-colors">Policy Bot</h1>
-            <p className="text-gray-400 text-xs">Policy Intelligence Suite</p>
+            <h1 className="text-gray-100 font-serif text-base font-normal group-hover:text-strategyand-red transition-colors">Policy Intelligence</h1>
+            <p className="text-gray-400 text-[10px] font-sans">Ideation Center</p>
           </div>
         </button>
       </div>
@@ -91,7 +91,7 @@ const SidebarNav: FC<SidebarNavProps> = ({ onNewAnalysis, onHomeClick }) => {
               ? 'bg-dark-500/60 text-gray-100 shadow-md backdrop-blur-sm' 
               : 'text-gray-400 hover:text-gray-200 hover:bg-dark-500/40'
             }
-            ${isNew ? 'mt-3 mb-2 bg-gradient-to-r from-gradient-from to-gradient-via text-white hover:shadow-lg hover:scale-[1.02] animate-glow' : ''}
+            ${isNew ? 'mt-3 mb-2 bg-gradient-to-r from-strategyand-maroon to-strategyand-red text-white hover:shadow-lg hover:scale-[1.02]' : ''}
           `;
 
           return (

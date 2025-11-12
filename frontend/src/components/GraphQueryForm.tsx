@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { GraphIcon } from '@/components/icons/TabIcons'
 
 interface GraphQueryFormProps {
   onSubmit: (data: any) => Promise<any>
@@ -58,8 +59,9 @@ export default function GraphQueryForm({ onSubmit, onSuccess }: GraphQueryFormPr
   return (
     <div className="max-w-2xl w-full p-8">
       <div className="neural-card p-8">
-        <h2 className="text-2xl font-bold text-gray-100 mb-2">
-          📊 Build Evidence Graph
+        <h2 className="text-2xl font-bold text-gray-100 mb-2 flex items-center gap-3">
+          <GraphIcon className="w-6 h-6" />
+          Build Evidence Graph
         </h2>
         <p className="text-gray-400 mb-6">
           Map complex social systems with data-driven causal relationships

@@ -9,12 +9,18 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@headlessui/react": "^2.2.9",
+    "@react-three/drei": "^10.7.6",
+    "@react-three/fiber": "^8.18.0",
     "@tailwindcss/typography": "^0.5.16",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
+    "@types/three": "^0.180.0",
     "@uiw/react-markdown-preview": "^5.1.5",
     "autoprefixer": "^10.0.1",
+    "framer-motion": "^12.23.24",
+    "globe.gl": "^2.44.1",
     "html2pdf.js": "^0.12.0",
     "jspdf": "^2.5.1",
     "markdown-it": "^14.0.0",
@@ -22,12 +28,16 @@
     "postcss": "^8",
     "react": "^18",
     "react-dom": "^18",
+    "react-globe.gl": "^2.36.0",
     "react-markdown": "^9.0.1",
+    "recharts": "^3.3.0",
     "remark-breaks": "^4.0.0",
     "remark-footnotes": "^4.0.1",
     "remark-gfm": "^4.0.0",
     "tailwindcss": "^3.3.0",
-    "typescript": "^5"
+    "three": "^0.180.0",
+    "typescript": "^5",
+    "ulid": "^3.0.1"
   },
   "devDependencies": {
     "@types/markdown-it": "^14.1.2",

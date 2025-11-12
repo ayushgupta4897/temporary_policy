@@ -1,6 +1,7 @@
 'use client';
 
 import { NewsScrapeQuery } from '@/types';
+import { NEWS_SCRAPE_THEME } from '@/config/theme';
 
 interface NewsScrapeCardProps {
   scrape: NewsScrapeQuery;
@@ -10,6 +11,9 @@ interface NewsScrapeCardProps {
 }
 
 export default function NewsScrapeCard({ scrape, isSelected, onClick, onDelete }: NewsScrapeCardProps) {
+  const CARD = NEWS_SCRAPE_THEME.QUERY_CARD;
+  const STATUS = NEWS_SCRAPE_THEME.STATUS_BADGES;
+
   const formatDate = (dateString: string) => {
     try {
       const date = new Date(dateString);
@@ -25,37 +29,28 @@ export default function NewsScrapeCard({ scrape, isSelected, onClick, onDelete }
   };
 
   const getStatusBadge = () => {
-    const statusConfig = {
-      'done': {
-        label: 'Complete',
-        className: 'bg-status-complete/20 text-status-complete border-status-complete/40'
-      },
-      'processing': {
-        label: 'Running',
-        className: 'bg-status-running/20 text-status-running border-status-running/40 animate-pulse'
-      },
-      'failed': {
-        label: 'Error',
-        className: 'bg-status-error/20 text-status-error border-status-error/40'
-      }
+    const statusMap: { [key: string]: typeof STATUS.COMPLETE } = {
+      'done': STATUS.COMPLETE,
+      'processing': STATUS.RUNNING,
+      'failed': STATUS.ERROR,
     };
 
-    const config = statusConfig[scrape.status] || statusConfig['failed'];
+    const config = statusMap[scrape.status] || STATUS.ERROR;
 
     return (
-      <span className={`px-3 py-1 rounded-full text-xs font-medium border ${config.className}`}>
+      <span className={`px-3 py-1 rounded-full text-xs font-medium border ${config.bg} ${config.text} ${config.border}`}>
         {config.label}
       </span>
     );
   };
 
   return (
-    <div 
+    <div
       onClick={onClick}
-      className={`border rounded-lg p-4 transition-all cursor-pointer group ${
-        isSelected 
-          ? 'bg-gradient-from/10 border-gradient-from' 
-          : 'bg-dark-500 border-dark-400 hover:bg-dark-400/50 hover:border-dark-300'
+      className={`${CARD.ROUNDED} p-4 cursor-pointer group ${CARD.TRANSITION} ${
+        isSelected
+          ? `${CARD.SELECTED_BG} ${CARD.SELECTED_BORDER_WIDTH} ${CARD.SELECTED_BORDER}`
+          : `${CARD.BACKGROUND} ${CARD.BORDER_WIDTH} ${CARD.BORDER} ${CARD.HOVER_BG} ${CARD.HOVER_BORDER}`
       }`}
     >
       <div className="flex items-start justify-between mb-3">

@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import { BuildingIcon, SearchIcon } from '@/components/icons/TabIcons';
 
 interface AnalysisModeToggleProps {
   mode: 'full' | 'research_only';
@@ -37,10 +38,15 @@ export const AnalysisModeToggle: React.FC<AnalysisModeToggleProps> = ({
           <div className="relative flex h-full">
             {/* Full Analysis Option */}
             <button
-              onClick={() => onChange('full')}
+              type="button"
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                onChange('full');
+              }}
               className={`flex-1 flex flex-col items-center justify-center space-y-1 transition-all duration-300 z-10 ${
-                mode === 'full' 
-                  ? 'text-white font-semibold' 
+                mode === 'full'
+                  ? 'text-white font-semibold'
                   : 'text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200'
               }`}
             >
@@ -56,10 +62,15 @@ export const AnalysisModeToggle: React.FC<AnalysisModeToggleProps> = ({
             
             {/* Research Only Option */}
             <button
-              onClick={() => onChange('research_only')}
+              type="button"
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                onChange('research_only');
+              }}
               className={`flex-1 flex flex-col items-center justify-center space-y-1 transition-all duration-300 z-10 ${
-                mode === 'research_only' 
-                  ? 'text-white font-semibold' 
+                mode === 'research_only'
+                  ? 'text-white font-semibold'
                   : 'text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200'
               }`}
             >
@@ -84,11 +95,17 @@ export const AnalysisModeToggle: React.FC<AnalysisModeToggleProps> = ({
       </div>
       
       {/* Description text */}
-      <div className="text-xs text-gray-500 dark:text-gray-400 px-1">
+      <div className="text-xs text-gray-500 dark:text-gray-400 px-1 flex items-center gap-2">
         {mode === 'full' ? (
-          <span>🏛️ Complete policy analysis with all reports and presentations</span>
+          <>
+            <BuildingIcon className="w-3 h-3" />
+            <span>Complete policy analysis with all reports and presentations</span>
+          </>
         ) : (
-          <span>🔍 Quick research phase only - elaboration and deep research</span>
+          <>
+            <SearchIcon className="w-3 h-3" />
+            <span>Quick research phase only - elaboration and deep research</span>
+          </>
         )}
       </div>
     </div>

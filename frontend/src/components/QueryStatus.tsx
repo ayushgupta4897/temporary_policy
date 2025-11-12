@@ -2,6 +2,8 @@
 
 import { useState, useEffect } from 'react';
 import { Query } from '@/types';
+import { UI_CONFIG, POLICY_CHAT_CONFIG, ANALYSIS_MODES } from '@/config';
+import { SearchIcon, BuildingIcon } from '@/components/icons/TabIcons';
 
 interface QueryStatusProps {
   query: Query;
@@ -14,14 +16,14 @@ export default function QueryStatus({ query, onRefresh }: QueryStatusProps) {
   useEffect(() => {
     const refreshInterval = setInterval(() => {
       onRefresh();
-    }, 30000);
+    }, UI_CONFIG.TIMERS.QUERY_STATUS_REFRESH);
 
     const timeInterval = setInterval(() => {
       const createdAt = new Date(query.createdAt).getTime();
       const now = Date.now();
       const elapsed = Math.floor((now - createdAt) / 1000);
       setTimeElapsed(elapsed);
-    }, 1000);
+    }, UI_CONFIG.TIMERS.TIME_UPDATE);
 
     return () => {
       clearInterval(refreshInterval);
@@ -33,7 +35,7 @@ export default function QueryStatus({ query, onRefresh }: QueryStatusProps) {
     const minutes = Math.floor(seconds / 60);
     const hrs = Math.floor(minutes / 60);
     const remainingMinutes = minutes % 60;
-    
+
     if (hrs > 0) {
       return `${hrs}h ${remainingMinutes}m`;
     }
@@ -43,23 +45,9 @@ export default function QueryStatus({ query, onRefresh }: QueryStatusProps) {
     return `${seconds}s`;
   };
 
-  const fullAnalysisStages = [
-    { name: 'Query Elaboration', icon: '🔍', description: 'Analyzing and expanding your policy request' },
-    { name: 'Deep Research', icon: '📚', description: 'Conducting comprehensive web research with citations' },
-    { name: 'Citation Analysis', icon: '🔗', description: 'Verifying sources and evaluating credibility' },
-    { name: 'Policy Drafting', icon: '📄', description: 'Creating implementation-ready policy document' },
-    { name: 'Scenario Simulation', icon: '🎭', description: 'Generating risk scenarios and impact analysis' },
-    { name: 'Data Analytics', icon: '📊', description: 'Creating KPIs and metrics visualizations' },
-    { name: 'Report Generation', icon: '📋', description: 'Compiling final deliverables and presentations' },
-  ];
-
-  const researchOnlyStages = [
-    { name: 'Query Elaboration', icon: '🔍', description: 'Analyzing and expanding your policy request' },
-    { name: 'Deep Research', icon: '📚', description: 'Conducting comprehensive web research with citations' },
-    { name: 'Citation Analysis', icon: '🔗', description: 'Verifying sources and evaluating credibility' },
-  ];
-
-  const processingStages = query.analysisMode === 'research_only' ? researchOnlyStages : fullAnalysisStages;
+  const processingStages = query.analysisMode === ANALYSIS_MODES.RESEARCH_ONLY
+    ? POLICY_CHAT_CONFIG.STAGES_RESEARCH_ONLY
+    : POLICY_CHAT_CONFIG.STAGES_FULL;
 
   return (
     <div className="page-container section-spacing">
@@ -81,12 +69,22 @@ export default function QueryStatus({ query, onRefresh }: QueryStatusProps) {
           
           {/* Analysis Mode Badge */}
           <div className="flex justify-center mt-4">
-            <div className={`inline-flex items-center px-4 py-2 rounded-full text-sm font-medium ${
-              query.analysisMode === 'research_only' 
+            <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium ${
+              query.analysisMode === 'research_only'
                 ? 'bg-blue-100 text-blue-800 dark:bg-blue-900/20 dark:text-blue-300'
                 : 'bg-gradient-from/20 text-gray-100'
             }`}>
-              {query.analysisMode === 'research_only' ? '🔍 Research Mode' : '🏛️ Full Analysis'}
+              {query.analysisMode === 'research_only' ? (
+                <>
+                  <SearchIcon className="w-4 h-4" />
+                  <span>Research Mode</span>
+                </>
+              ) : (
+                <>
+                  <BuildingIcon className="w-4 h-4" />
+                  <span>Full Analysis</span>
+                </>
+              )}
             </div>
           </div>
         </div>

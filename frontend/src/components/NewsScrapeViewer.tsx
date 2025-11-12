@@ -6,6 +6,7 @@ import { apiService } from '@/services/api';
 import NewsCitationCard from './NewsCitationCard';
 import LoadingSkeleton from './LoadingSkeleton';
 import AnalyticsDashboard from './analytics/AnalyticsDashboard';
+import { NEWS_SCRAPE_THEME } from '@/config/theme';
 
 interface NewsScrapeViewerProps {
   scrape: NewsScrapeQuery;
@@ -190,13 +191,14 @@ export default function NewsScrapeViewer({ scrape, onRefresh }: NewsScrapeViewer
 
         {scrape.status === 'done' && citations.length > 0 && (
           <>
+            {/* Sort and Search Bar */}
             <div className="flex items-center gap-4 mb-4 p-4 bg-dark-600/40 rounded-xl border border-dark-400/40">
               <div className="flex items-center gap-2 flex-1">
-                <label className="text-sm font-medium text-gray-400">Sort by:</label>
+                <label className="text-sm font-medium text-gray-400 whitespace-nowrap">Sort by:</label>
                 <select
                   value={sortBy}
                   onChange={(e) => setSortBy(e.target.value as any)}
-                  className="flex-1 px-3 py-2 bg-dark-700 border border-dark-400 rounded-lg text-gray-300 text-sm focus:outline-none focus:ring-2 focus:ring-gradient-from/50"
+                  className="flex-1 px-3 py-2 bg-dark-700 border border-dark-400 rounded-lg text-gray-300 text-sm focus:outline-none focus:ring-2 focus:ring-strategyand-accent/50 transition-all duration-[280ms]"
                 >
                   <option value="date">Date (Newest First)</option>
                   <option value="relevance">Relevance Score</option>
@@ -206,119 +208,206 @@ export default function NewsScrapeViewer({ scrape, onRefresh }: NewsScrapeViewer
               </div>
 
               <div className="flex items-center gap-2 flex-1">
-                <label className="text-sm font-medium text-gray-400">Search:</label>
+                <label className="text-sm font-medium text-gray-400 whitespace-nowrap">Search:</label>
                 <input
                   type="text"
                   value={filterKeyword}
                   onChange={(e) => setFilterKeyword(e.target.value)}
                   placeholder="Title, summary, publisher..."
-                  className="flex-1 px-3 py-2 bg-dark-700 border border-dark-400 rounded-lg text-gray-300 text-sm placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-gradient-from/50"
+                  className="flex-1 px-3 py-2 bg-dark-700 border border-dark-400 rounded-lg text-gray-300 text-sm placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-strategyand-accent/50 transition-all duration-[280ms]"
                 />
                 {filterKeyword && (
                   <button
                     onClick={() => setFilterKeyword('')}
-                    className="px-2 py-1 text-gray-400 hover:text-gray-300 text-lg"
-                    title="Clear filter"
+                    className="px-2 py-1 text-gray-400 hover:text-gray-300 transition-colors duration-[280ms]"
+                    title="Clear search"
                   >
-                    ✗
+                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                    </svg>
                   </button>
                 )}
               </div>
             </div>
 
-            <div className="grid grid-cols-4 gap-4 mb-6 p-4 bg-dark-600/40 rounded-xl border border-dark-400/40">
-              <div>
-                <label className="text-sm font-medium text-gray-400 mb-2 block">Region</label>
-                <select
-                  multiple
-                  value={selectedRegions}
-                  onChange={(e) => setSelectedRegions(Array.from(e.target.selectedOptions, opt => opt.value))}
-                  className="w-full px-3 py-2 bg-dark-700 border border-dark-400 rounded-lg text-gray-300 text-sm focus:outline-none focus:ring-2 focus:ring-gradient-from/50 min-h-[100px]"
-                >
-                  {allRegions.map(region => (
-                    <option key={region} value={region}>{region}</option>
-                  ))}
-                </select>
+            {/* Tag-based Filter Section */}
+            <div className="mb-6 p-4 bg-dark-600/40 rounded-xl border border-dark-400/40">
+              <div className="flex items-center justify-between mb-3">
+                <h3 className="text-sm font-semibold text-gray-300">Filter by Tags</h3>
+                {(selectedRegions.length > 0 || selectedCountries.length > 0 || selectedTopics.length > 0 || selectedIndustries.length > 0) && (
+                  <button
+                    onClick={() => {
+                      setSelectedRegions([]);
+                      setSelectedCountries([]);
+                      setSelectedTopics([]);
+                      setSelectedIndustries([]);
+                    }}
+                    className="text-xs text-strategyand-accent hover:text-strategyand-accent/80 transition-colors duration-[280ms]"
+                  >
+                    Clear All Filters
+                  </button>
+                )}
               </div>
 
-              <div>
-                <label className="text-sm font-medium text-gray-400 mb-2 block">Country</label>
-                <select
-                  multiple
-                  value={selectedCountries}
-                  onChange={(e) => setSelectedCountries(Array.from(e.target.selectedOptions, opt => opt.value))}
-                  className="w-full px-3 py-2 bg-dark-700 border border-dark-400 rounded-lg text-gray-300 text-sm focus:outline-none focus:ring-2 focus:ring-gradient-from/50 min-h-[100px]"
-                >
-                  {allCountries.map(country => (
-                    <option key={country} value={country}>{country}</option>
-                  ))}
-                </select>
-              </div>
+              {/* Region Tags */}
+              {allRegions.length > 0 && (
+                <div className="mb-3">
+                  <label className="text-xs font-medium text-gray-400 mb-2 block">Region</label>
+                  <div className="flex flex-wrap gap-2">
+                    {allRegions.map(region => {
+                      const isActive = selectedRegions.includes(region);
+                      const filterTag = NEWS_SCRAPE_THEME.FILTER_TAGS;
+                      const style = isActive ? filterTag.ACTIVE : filterTag.INACTIVE;
+                      return (
+                        <button
+                          key={region}
+                          onClick={() => {
+                            if (isActive) {
+                              setSelectedRegions(selectedRegions.filter(r => r !== region));
+                            } else {
+                              setSelectedRegions([...selectedRegions, region]);
+                            }
+                          }}
+                          className={`px-3 py-1.5 rounded-md text-xs font-medium border transition-all duration-[280ms] ${style.bg} ${style.text} ${style.border} ${isActive ? style.hoverBg : `${style.hoverBg} ${style.hoverText || ''}`}`}
+                        >
+                          {region}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
 
-              <div>
-                <label className="text-sm font-medium text-gray-400 mb-2 block">Topics</label>
-                <select
-                  multiple
-                  value={selectedTopics}
-                  onChange={(e) => setSelectedTopics(Array.from(e.target.selectedOptions, opt => opt.value))}
-                  className="w-full px-3 py-2 bg-dark-700 border border-dark-400 rounded-lg text-gray-300 text-sm focus:outline-none focus:ring-2 focus:ring-gradient-from/50 min-h-[100px]"
-                >
-                  {allTopics.map(topic => (
-                    <option key={topic} value={topic}>{topic}</option>
-                  ))}
-                </select>
-              </div>
+              {/* Country Tags */}
+              {allCountries.length > 0 && (
+                <div className="mb-3">
+                  <label className="text-xs font-medium text-gray-400 mb-2 block">Country</label>
+                  <div className="flex flex-wrap gap-2">
+                    {allCountries.map(country => {
+                      const isActive = selectedCountries.includes(country);
+                      const filterTag = NEWS_SCRAPE_THEME.FILTER_TAGS;
+                      const style = isActive ? filterTag.ACTIVE : filterTag.INACTIVE;
+                      return (
+                        <button
+                          key={country}
+                          onClick={() => {
+                            if (isActive) {
+                              setSelectedCountries(selectedCountries.filter(c => c !== country));
+                            } else {
+                              setSelectedCountries([...selectedCountries, country]);
+                            }
+                          }}
+                          className={`px-3 py-1.5 rounded-md text-xs font-medium border transition-all duration-[280ms] ${style.bg} ${style.text} ${style.border} ${isActive ? style.hoverBg : `${style.hoverBg} ${style.hoverText || ''}`}`}
+                        >
+                          {country}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
 
-              <div>
-                <label className="text-sm font-medium text-gray-400 mb-2 block">Industry</label>
-                <select
-                  multiple
-                  value={selectedIndustries}
-                  onChange={(e) => setSelectedIndustries(Array.from(e.target.selectedOptions, opt => opt.value))}
-                  className="w-full px-3 py-2 bg-dark-700 border border-dark-400 rounded-lg text-gray-300 text-sm focus:outline-none focus:ring-2 focus:ring-gradient-from/50 min-h-[100px]"
-                >
-                  {allIndustries.map(industry => (
-                    <option key={industry} value={industry}>{industry}</option>
-                  ))}
-                </select>
-              </div>
+              {/* Topics Tags */}
+              {allTopics.length > 0 && (
+                <div className="mb-3">
+                  <label className="text-xs font-medium text-gray-400 mb-2 block">Topics</label>
+                  <div className="flex flex-wrap gap-2">
+                    {allTopics.map(topic => {
+                      const isActive = selectedTopics.includes(topic);
+                      const filterTag = NEWS_SCRAPE_THEME.FILTER_TAGS;
+                      const style = isActive ? filterTag.ACTIVE : filterTag.INACTIVE;
+                      return (
+                        <button
+                          key={topic}
+                          onClick={() => {
+                            if (isActive) {
+                              setSelectedTopics(selectedTopics.filter(t => t !== topic));
+                            } else {
+                              setSelectedTopics([...selectedTopics, topic]);
+                            }
+                          }}
+                          className={`px-3 py-1.5 rounded-md text-xs font-medium border transition-all duration-[280ms] ${style.bg} ${style.text} ${style.border} ${isActive ? style.hoverBg : `${style.hoverBg} ${style.hoverText || ''}`}`}
+                        >
+                          {topic}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+
+              {/* Industry Tags */}
+              {allIndustries.length > 0 && (
+                <div>
+                  <label className="text-xs font-medium text-gray-400 mb-2 block">Industry</label>
+                  <div className="flex flex-wrap gap-2">
+                    {allIndustries.map(industry => {
+                      const isActive = selectedIndustries.includes(industry);
+                      const filterTag = NEWS_SCRAPE_THEME.FILTER_TAGS;
+                      const style = isActive ? filterTag.ACTIVE : filterTag.INACTIVE;
+                      return (
+                        <button
+                          key={industry}
+                          onClick={() => {
+                            if (isActive) {
+                              setSelectedIndustries(selectedIndustries.filter(i => i !== industry));
+                            } else {
+                              setSelectedIndustries([...selectedIndustries, industry]);
+                            }
+                          }}
+                          className={`px-3 py-1.5 rounded-md text-xs font-medium border transition-all duration-[280ms] ${style.bg} ${style.text} ${style.border} ${isActive ? style.hoverBg : `${style.hoverBg} ${style.hoverText || ''}`}`}
+                        >
+                          {industry}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
             </div>
 
+            {/* Active Filter Summary */}
             {(selectedRegions.length > 0 || selectedCountries.length > 0 || selectedTopics.length > 0 || selectedIndustries.length > 0) && (
-              <div className="mb-4 p-3 bg-dark-600/40 rounded-lg border border-dark-400/40 flex items-center justify-between">
-                <div className="flex flex-wrap gap-2">
-                  {selectedRegions.map(r => (
-                    <span key={r} className="px-2 py-1 bg-gradient-from/20 text-gradient-from rounded text-xs">
-                      {r}
-                    </span>
-                  ))}
-                  {selectedCountries.map(c => (
-                    <span key={c} className="px-2 py-1 bg-gradient-via/20 text-gradient-via rounded text-xs">
-                      {c}
-                    </span>
-                  ))}
-                  {selectedTopics.map(t => (
-                    <span key={t} className="px-2 py-1 bg-gradient-to/20 text-gradient-to rounded text-xs">
-                      {t}
-                    </span>
-                  ))}
-                  {selectedIndustries.map(i => (
-                    <span key={i} className="px-2 py-1 bg-purple-500/20 text-purple-400 rounded text-xs">
-                      {i}
-                    </span>
-                  ))}
+              <div className="mb-4 p-3 bg-dark-600/40 rounded-lg border border-strategyand-accent/30 flex items-center justify-between">
+                <div className="flex flex-wrap gap-2 flex-1">
+                  <span className="text-xs text-gray-400 mr-2">Active filters:</span>
+                  {selectedRegions.map(r => {
+                    const tags = NEWS_SCRAPE_THEME.TAG_COLORS.REGION;
+                    return (
+                      <span key={r} className={`px-2 py-1 ${tags.bg} ${tags.text} border ${tags.border} rounded text-xs flex items-center gap-1`}>
+                        {r}
+                        <button onClick={() => setSelectedRegions(selectedRegions.filter(x => x !== r))} className="hover:text-white">×</button>
+                      </span>
+                    );
+                  })}
+                  {selectedCountries.map(c => {
+                    const tags = NEWS_SCRAPE_THEME.TAG_COLORS.COUNTRY;
+                    return (
+                      <span key={c} className={`px-2 py-1 ${tags.bg} ${tags.text} border ${tags.border} rounded text-xs flex items-center gap-1`}>
+                        {c}
+                        <button onClick={() => setSelectedCountries(selectedCountries.filter(x => x !== c))} className="hover:text-white">×</button>
+                      </span>
+                    );
+                  })}
+                  {selectedTopics.map(t => {
+                    const tags = NEWS_SCRAPE_THEME.TAG_COLORS.TOPICS;
+                    return (
+                      <span key={t} className={`px-2 py-1 ${tags.bg} ${tags.text} border ${tags.border} rounded text-xs flex items-center gap-1`}>
+                        {t}
+                        <button onClick={() => setSelectedTopics(selectedTopics.filter(x => x !== t))} className="hover:text-white">×</button>
+                      </span>
+                    );
+                  })}
+                  {selectedIndustries.map(i => {
+                    const tags = NEWS_SCRAPE_THEME.TAG_COLORS.INDUSTRY;
+                    return (
+                      <span key={i} className={`px-2 py-1 ${tags.bg} ${tags.text} border ${tags.border} rounded text-xs flex items-center gap-1`}>
+                        {i}
+                        <button onClick={() => setSelectedIndustries(selectedIndustries.filter(x => x !== i))} className="hover:text-white">×</button>
+                      </span>
+                    );
+                  })}
                 </div>
-                <button
-                  onClick={() => {
-                    setSelectedRegions([]);
-                    setSelectedCountries([]);
-                    setSelectedTopics([]);
-                    setSelectedIndustries([]);
-                  }}
-                  className="text-sm text-gray-400 hover:text-gray-300 underline"
-                >
-                  Clear All
-                </button>
               </div>
             )}
           </>

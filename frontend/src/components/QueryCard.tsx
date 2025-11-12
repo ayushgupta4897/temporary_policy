@@ -111,14 +111,9 @@ const QueryCard: FC<QueryCardProps> = ({ query, onSelect, onDelete }) => {
         </div>
       </div>
 
-      {/* Run Date */}
-      <p className="text-gray-400 text-sm mb-2">
-        Run date: {formatDate(query.createdAt)}
-      </p>
-
-      {/* Query ID */}
-      <p className="text-gray-500 text-xs font-mono mb-4">
-        ID: {query.queryId}
+      {/* Date - no label */}
+      <p className="text-gray-400 text-sm mb-4">
+        {formatDate(query.createdAt)}
       </p>
 
       {/* Metadata */}

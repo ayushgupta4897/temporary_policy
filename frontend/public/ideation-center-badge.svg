@@ -1,0 +1,21 @@
+<svg width="300" height="80" viewBox="0 0 300 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Ideation Center Badge -->
+  <defs>
+    <linearGradient id="particleGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#A32020;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#D93954;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+
+  <!-- Background subtle sphere particles -->
+  <circle cx="250" cy="40" r="3" fill="url(#particleGrad)" opacity="0.6"/>
+  <circle cx="260" cy="30" r="2" fill="url(#particleGrad)" opacity="0.4"/>
+  <circle cx="270" cy="50" r="2.5" fill="url(#particleGrad)" opacity="0.5"/>
+  <circle cx="280" cy="35" r="1.5" fill="url(#particleGrad)" opacity="0.3"/>
+
+  <!-- Main text -->
+  <text x="0" y="32" font-family="Georgia, serif" font-size="28" font-weight="normal" fill="#333333">The Ideation Center</text>
+
+  <!-- Subtitle -->
+  <text x="0" y="60" font-family="Georgia, serif" font-size="14" font-style="italic" fill="#666666">Bold missions unlock sustainable transformation</text>
+</svg>

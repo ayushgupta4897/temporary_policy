@@ -8,7 +8,7 @@ WORKDIR /app
 
 # Copy package files
 COPY frontend/package*.json ./
-RUN npm ci --only=production
+RUN npm ci --legacy-peer-deps --omit=dev
 
 # Rebuild the source code only when needed
 FROM base AS builder
@@ -17,9 +17,10 @@ COPY --from=deps /app/node_modules ./node_modules
 COPY frontend/ .
 
 # Set environment variables for build
+ARG BACKEND_URL
 ENV NEXT_TELEMETRY_DISABLED=1
 ENV NODE_ENV=production
-ENV API_BASE_URL=https://ca-policy-backend.whitestone-31d90b86.eastus.azurecontainerapps.io
+ENV NEXT_PUBLIC_API_BASE_URL=${BACKEND_URL}
 
 # Build the application
 RUN npm run build

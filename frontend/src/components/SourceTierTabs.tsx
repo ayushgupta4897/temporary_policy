@@ -1,6 +1,33 @@
 'use client';
 
 import { SourceTierAnalysis } from '@/types';
+import {
+  BuildingIcon,
+  ChartIcon,
+  GlobeIcon,
+  BankIcon,
+  TrendingIcon,
+  ScienceIcon,
+  MedicalIcon,
+  BookIcon,
+  FileIcon,
+  AcademicCapIcon,
+  CloudIcon,
+  UsersIcon,
+  ScaleIcon,
+  CashIcon,
+  ChecklistIcon,
+  NewspaperIcon,
+  BriefcaseIcon,
+  OfficeIcon,
+  HandshakeIcon,
+  CogIcon,
+  RefreshIcon,
+  RocketIcon,
+  WarningIcon,
+  HistoryIcon,
+  BroadcastIcon,
+} from '@/components/icons/TabIcons';
 
 interface SourceTierTabsProps {
   tierAnalysis: SourceTierAnalysis | null;
@@ -31,40 +58,40 @@ export default function SourceTierTabs({ tierAnalysis, selectedTier, onTierSelec
       .join(' ');
   };
 
-  const getTierIcon = (tier: string) => {
-    const iconMap: Record<string, string> = {
-      'official_government_primary': '🏛️',
-      'government_statistics_bureaus': '📊',
-      'international_organizations_un': '🌍',
-      'international_organizations_financial': '🏦',
-      'international_organizations_oecd': '📈',
-      'peer_reviewed_nature_science': '🔬',
-      'peer_reviewed_medical': '⚕️',
-      'peer_reviewed_social_science': '📚',
-      'peer_reviewed_policy_journals': '📜',
-      'peer_reviewed_domain_specific': '🎓',
-      'university_research_centers': '🏫',
-      'think_tanks_global': '💭',
-      'think_tanks_regional': '🌐',
-      'professional_associations': '👥',
-      'regulatory_authorities': '⚖️',
-      'central_banks_monetary': '💰',
-      'industry_reports_consulting': '📋',
-      'industry_reports_market_research': '📊',
-      'industry_associations': '🏢',
-      'news_quality_international': '📰',
-      'news_quality_business': '💼',
-      'news_specialized_trade': '📡',
-      'multilateral_development_banks': '🏛️',
-      'ngo_advocacy_organizations': '🤝',
-      'policy_implementation_cases': '⚙️',
-      'comparative_international_studies': '🔄',
-      'historical_policy_analysis': '📜',
-      'emerging_trends_future': '🚀',
-      'quantitative_data_metrics': '📊',
-      'implementation_barriers_challenges': '⚠️'
+  const getTierIcon = (tier: string, className: string = "w-5 h-5") => {
+    const iconMap: Record<string, JSX.Element> = {
+      'official_government_primary': <BuildingIcon className={className} />,
+      'government_statistics_bureaus': <ChartIcon className={className} />,
+      'international_organizations_un': <GlobeIcon className={className} />,
+      'international_organizations_financial': <BankIcon className={className} />,
+      'international_organizations_oecd': <TrendingIcon className={className} />,
+      'peer_reviewed_nature_science': <ScienceIcon className={className} />,
+      'peer_reviewed_medical': <MedicalIcon className={className} />,
+      'peer_reviewed_social_science': <BookIcon className={className} />,
+      'peer_reviewed_policy_journals': <FileIcon className={className} />,
+      'peer_reviewed_domain_specific': <AcademicCapIcon className={className} />,
+      'university_research_centers': <AcademicCapIcon className={className} />,
+      'think_tanks_global': <CloudIcon className={className} />,
+      'think_tanks_regional': <GlobeIcon className={className} />,
+      'professional_associations': <UsersIcon className={className} />,
+      'regulatory_authorities': <ScaleIcon className={className} />,
+      'central_banks_monetary': <CashIcon className={className} />,
+      'industry_reports_consulting': <ChecklistIcon className={className} />,
+      'industry_reports_market_research': <ChartIcon className={className} />,
+      'industry_associations': <OfficeIcon className={className} />,
+      'news_quality_international': <NewspaperIcon className={className} />,
+      'news_quality_business': <BriefcaseIcon className={className} />,
+      'news_specialized_trade': <BroadcastIcon className={className} />,
+      'multilateral_development_banks': <BankIcon className={className} />,
+      'ngo_advocacy_organizations': <HandshakeIcon className={className} />,
+      'policy_implementation_cases': <CogIcon className={className} />,
+      'comparative_international_studies': <RefreshIcon className={className} />,
+      'historical_policy_analysis': <HistoryIcon className={className} />,
+      'emerging_trends_future': <RocketIcon className={className} />,
+      'quantitative_data_metrics': <ChartIcon className={className} />,
+      'implementation_barriers_challenges': <WarningIcon className={className} />
     };
-    return iconMap[tier] || '📄';
+    return iconMap[tier] || <FileIcon className={className} />;
   };
 
   const getTierDescription = (tier: string) => {
@@ -114,14 +141,14 @@ export default function SourceTierTabs({ tierAnalysis, selectedTier, onTierSelec
         {/* All Sources Tab */}
         <button
           onClick={() => onTierSelect('all')}
-          className={`flex-shrink-0 px-4 py-2 text-sm font-medium rounded-lg transition-colors ${
+          className={`flex-shrink-0 px-4 py-2 text-sm font-medium rounded-lg transition-colors flex items-center gap-2 ${
             selectedTier === 'all'
               ? 'bg-gradient-to-r from-gradient-from to-gradient-to text-white'
               : 'bg-dark-600/50 text-gray-300 hover:bg-dark-500/50 hover:text-white'
           }`}
           title="View all citations from all source tiers"
         >
-          <span className="mr-2">🌐</span>
+          <GlobeIcon className="w-4 h-4" />
           All Sources
           <span className="ml-2 px-2 py-1 bg-white/20 rounded-full text-xs">
             {Object.values(tierAnalysis.tier_distribution).reduce((a, b) => a + b, 0)}
@@ -133,14 +160,14 @@ export default function SourceTierTabs({ tierAnalysis, selectedTier, onTierSelec
           <button
             key={tier}
             onClick={() => onTierSelect(tier)}
-            className={`flex-shrink-0 px-4 py-2 text-sm font-medium rounded-lg transition-colors group ${
+            className={`flex-shrink-0 px-4 py-2 text-sm font-medium rounded-lg transition-colors group flex items-center gap-2 ${
               selectedTier === tier
                 ? 'bg-gradient-to-r from-gradient-from to-gradient-to text-white'
                 : 'bg-dark-600/50 text-gray-300 hover:bg-dark-500/50 hover:text-white'
             }`}
             title={getTierDescription(tier)}
           >
-            <span className="mr-2">{getTierIcon(tier)}</span>
+            {getTierIcon(tier, "w-4 h-4")}
             <span className="hidden md:inline">{formatTierName(tier)}</span>
             <span className="md:hidden">{formatTierName(tier).split(' ').slice(0, 2).join(' ')}</span>
             <span className="ml-2 px-2 py-1 bg-white/20 rounded-full text-xs">
@@ -179,7 +206,7 @@ export default function SourceTierTabs({ tierAnalysis, selectedTier, onTierSelec
       {selectedTier !== 'all' && (
         <div className="py-3 px-4 bg-dark-600/20 rounded-lg mb-4">
           <div className="flex items-center gap-3">
-            <span className="text-2xl">{getTierIcon(selectedTier)}</span>
+            <div className="flex-shrink-0">{getTierIcon(selectedTier, "w-8 h-8")}</div>
             <div>
               <h4 className="text-lg font-medium text-gray-100">{formatTierName(selectedTier)}</h4>
               <p className="text-sm text-gray-400">{getTierDescription(selectedTier)}</p>

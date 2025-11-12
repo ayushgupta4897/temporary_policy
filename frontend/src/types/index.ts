@@ -130,6 +130,7 @@ export interface ImpactAnalysisResponse {
   citations_count: number;
   citations: ImpactCitation[];
   impact_analysis?: string;
+  error_message?: string;
   created_at?: string;
   updated_at?: string;
 }
@@ -225,4 +226,104 @@ export interface NewsScrapeResults {
   executive_summaries: Record<string, ExecutiveSummary>;
   total_citations: number;
   timestamp: string;
+}
+
+// Foresight Radar Types
+export interface ForesightRadarRequest {
+  query: string;
+}
+
+export interface ForesightRadarQuery {
+  queryId: string;
+  query: string;
+  displayTitle?: string;
+  status: 'processing' | 'done' | 'failed';
+  createdAt: string;
+  completedAt?: string;
+  errorMessage?: string;
+  blobUrls?: BlobUrl[];
+  durationMinutes?: number;
+  totalSearches?: number;
+  uniqueCitations?: number;
+  signalsCount?: number;
+  scenariosCount?: number;
+  watchlistCount?: number;
+  batchSize?: number;
+}
+
+export interface ForesightRadarContent {
+  content: string;
+  contentType: string;
+}
+
+export interface RadarSignal {
+  title: string;
+  ring: 'Now' | 'Next' | 'Later';
+  quadrant: 'Social' | 'Technological' | 'Economic' | 'Environmental' | 'Political' | 'Geopolitical';
+  impact_0to5: number;
+  likelihood_0to5: number;
+  confidence_0to5: number;
+  direction: 'up' | 'down' | 'flat';
+  driver_type: string;
+  uncertainty_class: 'deep' | 'estimable';
+  rationale: string;
+  citations: string[];
+  priority_score?: number;
+}
+
+export interface RadarScenario {
+  name: string;
+  axes: string[];
+  summary: string;
+  signposts: Array<{
+    metric: string;
+    threshold: string;
+    source: string;
+  }>;
+  implications: {
+    opportunities: string[];
+    hedges: string[];
+    no_regret_moves: string[];
+  };
+}
+
+export interface WatchlistIndicator {
+  metric: string;
+  unit: string;
+  source: string;
+  frequency: string;
+  expected_direction: 'up' | 'down' | 'flat';
+  alert_thresholds: {
+    amber: string;
+    red: string;
+  };
+}
+
+export interface RadarJSON {
+  query: string;
+  as_of_date: string;
+  scope?: {
+    restatement: string;
+    unit_of_analysis: string;
+    dependent_variables: string[];
+  };
+  radar_items: RadarSignal[];
+  cross_impact: Array<{
+    from: string;
+    to: string;
+    relation: 'amplifies' | 'dampens';
+    note: string;
+  }>;
+  scenarios: RadarScenario[];
+  watchlist: WatchlistIndicator[];
+  keystone_drivers?: Array<{
+    driver: string;
+    influence_score: number;
+    affected_signals: string[];
+  }>;
+  fragility_points?: Array<{
+    point: string;
+    risk_level: 'high' | 'medium' | 'low';
+    mitigation: string;
+  }>;
 }

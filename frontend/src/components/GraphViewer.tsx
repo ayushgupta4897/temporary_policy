@@ -2,6 +2,8 @@
 
 import { useState, useEffect } from 'react'
 import api from '@/services/api'
+import { GraphIcon, DocumentIcon, TableIcon } from '@/components/icons/TabIcons'
+import StepIndicator from '@/components/StepIndicator'
 
 interface GraphViewerProps {
   query: any
@@ -56,21 +58,34 @@ export default function GraphViewer({ query, onRefresh }: GraphViewerProps) {
 
   const renderStatus = () => {
     if (query.status === 'processing') {
+      const steps = query.steps || []
+
       return (
-        <div className="flex-1 flex items-center justify-center">
-          <div className="text-center">
-            <div className="mb-4">
-              <svg className="animate-spin h-12 w-12 mx-auto text-gradient-from" fill="none" viewBox="0 0 24 24">
-                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
-              </svg>
+        <div className="flex-1 flex items-center justify-center py-8">
+          <div className="w-full max-w-4xl px-6">
+            <div className="text-center mb-8">
+              <h3 className="text-2xl font-semibold text-gray-200 mb-2">Building Evidence Graph</h3>
+              <p className="text-gray-400 mb-1">Analyzing sources and synthesizing evidence</p>
+              <p className="text-xs text-gray-500">Typically takes 10-15 minutes</p>
+              {query.createdAt && (
+                <p className="text-xs text-gray-500 mt-1">
+                  Started: {new Date(query.createdAt).toLocaleTimeString()}
+                </p>
+              )}
             </div>
-            <h3 className="text-xl font-semibold text-gray-200 mb-2">Building Evidence Graph...</h3>
-            <p className="text-gray-400">This typically takes 10-15 minutes</p>
-            {query.createdAt && (
-              <p className="text-sm text-gray-500 mt-2">
-                Started: {new Date(query.createdAt).toLocaleTimeString()}
-              </p>
+
+            {/* Step-based Progress Indicator */}
+            {steps.length > 0 ? (
+              <StepIndicator steps={steps} />
+            ) : (
+              // Fallback for queries without step data
+              <div className="text-center">
+                <svg className="animate-spin h-12 w-12 mx-auto text-gradient-from mb-4" fill="none" viewBox="0 0 24 24">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                </svg>
+                <p className="text-gray-400">{query.currentStep || 'Processing...'}</p>
+              </div>
             )}
           </div>
         </div>
@@ -188,33 +203,36 @@ export default function GraphViewer({ query, onRefresh }: GraphViewerProps) {
           <div className="flex gap-2">
             <button
               onClick={() => setActiveTab('graph')}
-              className={`px-4 py-2 rounded-lg transition-all ${
+              className={`px-4 py-2 rounded-lg transition-all flex items-center gap-2 ${
                 activeTab === 'graph'
                   ? 'bg-gradient-to-r from-gradient-from to-gradient-via text-white'
                   : 'text-gray-400 hover:text-gray-200'
               }`}
             >
-              📊 Graph
+              <GraphIcon className="w-4 h-4" />
+              Graph
             </button>
             <button
               onClick={() => setActiveTab('executive')}
-              className={`px-4 py-2 rounded-lg transition-all ${
+              className={`px-4 py-2 rounded-lg transition-all flex items-center gap-2 ${
                 activeTab === 'executive'
                   ? 'bg-gradient-to-r from-gradient-from to-gradient-via text-white'
                   : 'text-gray-400 hover:text-gray-200'
               }`}
             >
-              📝 Executive Summary
+              <DocumentIcon className="w-4 h-4" />
+              Executive Summary
             </button>
             <button
               onClick={() => setActiveTab('csv')}
-              className={`px-4 py-2 rounded-lg transition-all ${
+              className={`px-4 py-2 rounded-lg transition-all flex items-center gap-2 ${
                 activeTab === 'csv'
                   ? 'bg-gradient-to-r from-gradient-from to-gradient-via text-white'
                   : 'text-gray-400 hover:text-gray-200'
               }`}
             >
-              📊 Data Tables
+              <TableIcon className="w-4 h-4" />
+              Data Tables
             </button>
           </div>
         </div>

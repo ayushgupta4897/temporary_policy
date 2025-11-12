@@ -25,7 +25,7 @@ export default function ContextualSearchForm({ onSubmit }: ContextualSearchFormP
   return (
     <div className="max-w-4xl mx-auto">
       <div className="text-center mb-12">
-        <div className="inline-block p-4 rounded-2xl bg-gradient-to-br from-gradient-from/30 to-gradient-via/30 animate-neural-pulse shadow-lg mb-6">
+        <div className="inline-block p-4 rounded-2xl bg-gradient-to-br from-gradient-from/30 to-gradient-via/30 shadow-lg mb-6">
           <svg className="w-12 h-12 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
           </svg>

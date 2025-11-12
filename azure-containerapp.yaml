@@ -1,13 +1,20 @@
 # Azure Container Apps Configuration
 # Policy Intelligence Platform Deployment
+#
+# IMPORTANT: This file uses placeholder variables that should be replaced
+# at deployment time. Use envsubst or sed to replace:
+#   - ${AZURE_SUBSCRIPTION_ID}
+#   - ${AZURE_RESOURCE_GROUP}
+#   - ${AZURE_ENVIRONMENT_NAME}
+#   - ${BACKEND_URL}
 
 apiVersion: 2023-05-01
-location: eastus
+location: ${AZURE_LOCATION}
 name: policy-intelligence-app
-resourceGroup: rg-policy-intelligence-ai
+resourceGroup: ${AZURE_RESOURCE_GROUP}
 
 properties:
-  environmentId: /subscriptions/SUBSCRIPTION_ID/resourceGroups/rg-policy-intelligence-ai/providers/Microsoft.App/managedEnvironments/env-policy-intelligence
+  environmentId: /subscriptions/${AZURE_SUBSCRIPTION_ID}/resourceGroups/${AZURE_RESOURCE_GROUP}/providers/Microsoft.App/managedEnvironments/${AZURE_ENVIRONMENT_NAME}
   
   configuration:
     activeRevisionsMode: single
@@ -21,8 +28,8 @@ properties:
           latestRevision: true
     
     registries:
-      - server: crpolicyintelligence.azurecr.io
-        identity: /subscriptions/SUBSCRIPTION_ID/resourceGroups/rg-policy-intelligence-ai/providers/Microsoft.ManagedIdentity/userAssignedIdentities/id-policy-intelligence
+      - server: ${AZURE_REGISTRY_NAME}.azurecr.io
+        identity: /subscriptions/${AZURE_SUBSCRIPTION_ID}/resourceGroups/${AZURE_RESOURCE_GROUP}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/id-policy-intelligence
     
     secrets:
       - name: azure-storage-connection
@@ -34,7 +41,7 @@ properties:
     containers:
       # Backend Container
       - name: backend
-        image: crpolicyintelligence.azurecr.io/policy-backend:latest
+        image: ${AZURE_REGISTRY_NAME}.azurecr.io/policy-backend:latest
         env:
           - name: AZURE_STORAGE_CONNECTION_STRING
             secretRef: azure-storage-connection
@@ -57,12 +64,12 @@ properties:
 
       # Frontend Container
       - name: frontend
-        image: crpolicyintelligence.azurecr.io/policy-frontend:latest
+        image: ${AZURE_REGISTRY_NAME}.azurecr.io/policy-frontend:latest
         env:
           - name: NODE_ENV
             value: "production"
-          - name: NEXT_PUBLIC_API_URL
-            value: "http://localhost:8000"
+          - name: NEXT_PUBLIC_API_BASE_URL
+            value: "${BACKEND_URL}"
         resources:
           cpu: 0.25
           memory: 0.5Gi

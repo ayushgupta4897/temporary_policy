@@ -6,6 +6,7 @@ import TrendChart from './TrendChart';
 import EntityGraph from './EntityGraph';
 import GeoHeatmap from './GeoHeatmap';
 import SentimentTimeline from './SentimentTimeline';
+import WordCloud from './WordCloud';
 
 interface AnalyticsDashboardProps {
   queryId: string;
@@ -31,7 +32,8 @@ export default function AnalyticsDashboard({ queryId }: AnalyticsDashboardProps)
   }, [queryId]);
 
   const checkExistingAnalytics = async () => {
-    const response = await fetch(`http://localhost:8000/news-scrapes/${queryId}/analytics/latest`);
+    const apiUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8000';
+    const response = await fetch(`${apiUrl}/news-scrapes/${queryId}/analytics/latest`);
 
     if (response.ok) {
       const existingAnalytics = await response.json();
@@ -54,7 +56,8 @@ export default function AnalyticsDashboard({ queryId }: AnalyticsDashboardProps)
     setStatus('loading');
     setError(null);
 
-    const response = await fetch(`http://localhost:8000/news-scrapes/${queryId}/analytics`, {
+    const apiUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8000';
+    const response = await fetch(`${apiUrl}/news-scrapes/${queryId}/analytics`, {
       method: 'POST'
     });
 
@@ -72,8 +75,9 @@ export default function AnalyticsDashboard({ queryId }: AnalyticsDashboardProps)
   useEffect(() => {
     if (!analyticsId || status !== 'processing') return;
 
+    const apiUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8000';
     const pollStatus = setInterval(async () => {
-      const response = await fetch(`http://localhost:8000/news-scrapes/${queryId}/analytics/${analyticsId}`);
+      const response = await fetch(`${apiUrl}/news-scrapes/${queryId}/analytics/${analyticsId}`);
 
       if (!response.ok) return;
 
@@ -94,11 +98,12 @@ export default function AnalyticsDashboard({ queryId }: AnalyticsDashboardProps)
   }, [analyticsId, status, queryId]);
 
   const loadAnalyticsData = async () => {
+    const apiUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8000';
     const types = ['clustering', 'trends', 'entities', 'geo', 'sentiment', 'summary'];
     const results: any = {};
 
     for (const type of types) {
-      const response = await fetch(`http://localhost:8000/news-scrapes/${queryId}/analytics/results/${type}`);
+      const response = await fetch(`${apiUrl}/news-scrapes/${queryId}/analytics/results/${type}`);
       if (response.ok) {
         const data = await response.json();
         results[type] = data.content;
@@ -214,9 +219,16 @@ export default function AnalyticsDashboard({ queryId }: AnalyticsDashboardProps)
         </div>
       </div>
 
-      <div className="bg-dark-600/40 rounded-xl border border-dark-400/40 p-6">
-        <h3 className="text-lg font-semibold text-white mb-4">Entity Network</h3>
-        <EntityGraph data={data.entities} />
+      <div className="grid grid-cols-2 gap-6">
+        <div className="bg-dark-600/40 rounded-xl border border-dark-400/40 p-6">
+          <h3 className="text-lg font-semibold text-white mb-4">Entity Network</h3>
+          <EntityGraph data={data.entities} />
+        </div>
+
+        <div className="bg-dark-600/40 rounded-xl border border-dark-400/40 p-6">
+          <h3 className="text-lg font-semibold text-white mb-4">Keyword Cloud</h3>
+          <WordCloud data={data.clustering} />
+        </div>
       </div>
     </div>
   );

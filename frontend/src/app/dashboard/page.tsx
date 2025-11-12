@@ -4,11 +4,14 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { Query } from '@/types';
 import { apiService } from '@/services/api';
+import { authUtils } from '@/utils/auth';
 import SidebarNav from '@/components/SidebarNav';
+import StrategyAndHeader from '@/components/StrategyAndHeader';
 import QueryCard from '@/components/QueryCard';
 import QueryForm from '@/components/QueryForm';
 import QueryStatus from '@/components/QueryStatus';
 import ReportsViewer from '@/components/ReportsViewer';
+import AIParticleField from '@/components/AIParticleField';
 
 export default function Dashboard() {
   const [queries, setQueries] = useState<Query[]>([]);
@@ -28,8 +31,8 @@ export default function Dashboard() {
   };
 
   useEffect(() => {
-    const isAuthenticated = localStorage.getItem('isAuthenticated') || localStorage.getItem('policy-drafter-auth');
-    if (!isAuthenticated) {
+    // Check authentication with 1-day expiry
+    if (!authUtils.isAuthenticated()) {
       router.push('/auth');
       return;
     }
@@ -162,41 +165,87 @@ export default function Dashboard() {
     // Main dashboard view with query cards
     return (
       <div className="space-y-8">
-        {/* Hero Section */}
-        <div className="text-center py-12">
-          <h1 className="text-5xl font-bold mb-4">
-            <span style={{
-              display: 'inline-block',
-              background: 'linear-gradient(to right, #A32020, #D93954)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              backgroundClip: 'text',
-              paddingLeft: '4px',
-              paddingRight: '4px'
-            }}>
-              Policy Bot
-            </span>
-          </h1>
-          <p className="text-gray-400 text-lg max-w-3xl mx-auto mb-8">
-            AI-powered policy research, benchmarking and implementation planning for smarter policy decisions
-          </p>
-          <button
-            onClick={() => setShowNewAnalysis(true)}
-            className="px-8 py-4 bg-gradient-from text-white font-medium rounded-lg hover:bg-[#8B1A1A] transition-colors text-lg flex items-center gap-2 mx-auto"
-          >
-            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-            </svg>
-            Start new analysis
-          </button>
-          <p className="text-gray-500 text-sm mt-4">
-            Analyze global best practices, assess sentiment and perception, and generate actionable policy options with roadmaps and KPIs
-          </p>
+        {/* Hero Section - Always Visible */}
+        <div className="grid lg:grid-cols-2 gap-12 items-center mb-12 animate-fade-in">
+          {/* Left Column - Content */}
+          <div className="text-left">
+            {/* Strategy& Logo */}
+            <div className="flex items-center gap-4 mb-8">
+              <div className="w-16 h-16 bg-strategyand-accent rounded-full flex items-center justify-center shadow-lg">
+                <span className="text-white font-serif text-4xl font-bold">&</span>
+              </div>
+              <div>
+                <h1 className="text-2xl font-serif text-strategyand-off-white tracking-tight">Policy Bot</h1>
+                <p className="text-sm text-strategyand-off-white/70">Ideation Center</p>
+              </div>
+            </div>
+
+            {/* Main Headline */}
+            <h2 className="font-serif text-5xl lg:text-6xl font-normal mb-6 text-strategyand-off-white leading-tight">
+              Evidence-driven policy
+              <br />
+              <span className="text-strategyand-accent">in minutes</span>
+            </h2>
+
+            {/* Divider */}
+            <div className="h-1 w-32 rounded-full bg-gradient-to-r from-strategyand-maroon to-strategyand-red mb-6"></div>
+
+            {/* Description */}
+            <p className="text-lg text-strategyand-off-white/80 mb-8 leading-relaxed">
+              Transform policy ideas into implementation-ready strategies. Powered by AI, backed by global evidence from 30+ source tiers, designed for strategic decision-making.
+            </p>
+
+            {/* CTA */}
+            <button
+              onClick={() => setShowNewAnalysis(true)}
+              className="bg-strategyand-accent hover:opacity-90 text-white px-10 py-4 rounded-lg text-base font-medium transition-opacity shadow-lg hover:shadow-xl inline-flex items-center gap-3"
+            >
+              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+              </svg>
+              Start new analysis
+            </button>
+
+            {/* Value Props */}
+            <div className="grid grid-cols-3 gap-6 mt-12">
+              <div>
+                <div className="text-strategyand-accent font-serif text-3xl mb-2">7-Stage</div>
+                <div className="text-xs text-strategyand-off-white/60">
+                  Research pipeline
+                </div>
+              </div>
+              <div>
+                <div className="text-strategyand-accent font-serif text-3xl mb-2">30+ Tiers</div>
+                <div className="text-xs text-strategyand-off-white/60">
+                  Evidence sources
+                </div>
+              </div>
+              <div>
+                <div className="text-strategyand-accent font-serif text-3xl mb-2">Real-time</div>
+                <div className="text-xs text-strategyand-off-white/60">
+                  Live tracking
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Right Column - AI Particle Animation */}
+          <div className="relative h-96 lg:h-[500px]">
+            <div className="absolute inset-0 flex items-center justify-center">
+              <AIParticleField />
+            </div>
+          </div>
         </div>
+
+        {/* Strategy& Header */}
+        <StrategyAndHeader
+          title="Policy Bot"
+          subtitle="AI-powered policy research, benchmarking and implementation planning for smarter policy decisions"
+        />
 
         {/* Filters Section */}
         <div className="flex items-center justify-between mb-6">
-          <h2 className="text-2xl font-semibold text-white">Recent Analyses</h2>
+            <h3 className="text-2xl font-serif font-normal text-neutral-50">Recent Analyses</h3>
           
           <div className="flex items-center gap-4">
             {/* Theme Filter */}
@@ -325,13 +374,7 @@ export default function Dashboard() {
         <header className="bg-dark-700/30 backdrop-blur-lg border-b border-dark-300/40 px-8 py-4 relative z-20">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-6">
-              <h2 className="text-xl font-semibold text-gray-100 animate-glow">Policy Intelligence Suite</h2>
-              {selectedQuery && (
-                <div className="flex items-center gap-2 text-gray-400 text-sm">
-                  <span className="text-gray-500">/</span>
-                  <span className="font-mono text-xs bg-dark-600/80 px-2 py-1 rounded">{selectedQuery.queryId}</span>
-                </div>
-              )}
+              <h2 className="text-xl font-semibold text-gray-100">Policy Intelligence Suite</h2>
             </div>
             
             {/* Right side actions */}

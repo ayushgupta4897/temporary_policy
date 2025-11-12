@@ -5,6 +5,7 @@ import { ContextualSearchQuery, SearchResults, Citation, SourceTierAnalysis } fr
 import { apiService } from '@/services/api';
 import CitationTile from '@/components/CitationTile';
 import SourceTierTabs from '@/components/SourceTierTabs';
+import { ChartIcon, BookIcon, DownloadIcon } from '@/components/icons/TabIcons';
 
 interface ContextualSearchViewerProps {
   search: ContextualSearchQuery;
@@ -223,20 +224,20 @@ export default function ContextualSearchViewer({ search, onRefresh }: Contextual
       <div className="border-b border-dark-400/30">
         <nav className="flex space-x-8">
           {[
-            { id: 'overview', label: 'Overview', icon: '📊' },
-            { id: 'citations', label: 'Citations', icon: '📚' },
-            { id: 'download', label: 'Export', icon: '💾' }
+            { id: 'overview', label: 'Overview', icon: <ChartIcon className="w-4 h-4" /> },
+            { id: 'citations', label: 'Citations', icon: <BookIcon className="w-4 h-4" /> },
+            { id: 'download', label: 'Export', icon: <DownloadIcon className="w-4 h-4" /> }
           ].map(tab => (
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id as any)}
-              className={`py-4 px-2 border-b-2 font-medium text-sm transition-colors ${
+              className={`py-4 px-2 border-b-2 font-medium text-sm transition-colors flex items-center gap-2 ${
                 activeTab === tab.id
-                  ? 'border-gradient-from text-gradient-from'
+                  ? 'border-gradient-to text-gradient-to'
                   : 'border-transparent text-gray-400 hover:text-gray-300'
               }`}
             >
-              <span className="mr-2">{tab.icon}</span>
+              {tab.icon}
               {tab.label}
             </button>
           ))}
@@ -331,7 +332,7 @@ export default function ContextualSearchViewer({ search, onRefresh }: Contextual
               <div className="text-gray-400 mb-4">No citations found for this source tier.</div>
               <button
                 onClick={() => setSelectedTier('all')}
-                className="text-gradient-from hover:underline"
+                className="text-gradient-to hover:text-strategyand-accent hover:underline transition-colors"
               >
                 View all citations
               </button>

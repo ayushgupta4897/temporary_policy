@@ -1,6 +1,33 @@
 'use client';
 
 import { Citation } from '@/types';
+import {
+  BuildingIcon,
+  ChartIcon,
+  GlobeIcon,
+  BankIcon,
+  TrendingIcon,
+  ScienceIcon,
+  MedicalIcon,
+  BookIcon,
+  FileIcon,
+  AcademicCapIcon,
+  CloudIcon,
+  UsersIcon,
+  ScaleIcon,
+  CashIcon,
+  ChecklistIcon,
+  NewspaperIcon,
+  BriefcaseIcon,
+  OfficeIcon,
+  HandshakeIcon,
+  CogIcon,
+  RefreshIcon,
+  RocketIcon,
+  WarningIcon,
+  HistoryIcon,
+  BroadcastIcon,
+} from '@/components/icons/TabIcons';
 
 interface CitationTileProps {
   citation: Citation;
@@ -15,40 +42,40 @@ export default function CitationTile({ citation, showSourceTier = false }: Citat
       .join(' ');
   };
 
-  const getTierIcon = (tier: string) => {
-    const iconMap: Record<string, string> = {
-      'official_government_primary': '🏛️',
-      'government_statistics_bureaus': '📊',
-      'international_organizations_un': '🌍',
-      'international_organizations_financial': '🏦',
-      'international_organizations_oecd': '📈',
-      'peer_reviewed_nature_science': '🔬',
-      'peer_reviewed_medical': '⚕️',
-      'peer_reviewed_social_science': '📚',
-      'peer_reviewed_policy_journals': '📜',
-      'peer_reviewed_domain_specific': '🎓',
-      'university_research_centers': '🏫',
-      'think_tanks_global': '💭',
-      'think_tanks_regional': '🌐',
-      'professional_associations': '👥',
-      'regulatory_authorities': '⚖️',
-      'central_banks_monetary': '💰',
-      'industry_reports_consulting': '📋',
-      'industry_reports_market_research': '📊',
-      'industry_associations': '🏢',
-      'news_quality_international': '📰',
-      'news_quality_business': '💼',
-      'news_specialized_trade': '📡',
-      'multilateral_development_banks': '🏛️',
-      'ngo_advocacy_organizations': '🤝',
-      'policy_implementation_cases': '⚙️',
-      'comparative_international_studies': '🔄',
-      'historical_policy_analysis': '📜',
-      'emerging_trends_future': '🚀',
-      'quantitative_data_metrics': '📊',
-      'implementation_barriers_challenges': '⚠️'
+  const getTierIcon = (tier: string, className: string = "w-4 h-4") => {
+    const iconMap: Record<string, JSX.Element> = {
+      'official_government_primary': <BuildingIcon className={className} />,
+      'government_statistics_bureaus': <ChartIcon className={className} />,
+      'international_organizations_un': <GlobeIcon className={className} />,
+      'international_organizations_financial': <BankIcon className={className} />,
+      'international_organizations_oecd': <TrendingIcon className={className} />,
+      'peer_reviewed_nature_science': <ScienceIcon className={className} />,
+      'peer_reviewed_medical': <MedicalIcon className={className} />,
+      'peer_reviewed_social_science': <BookIcon className={className} />,
+      'peer_reviewed_policy_journals': <FileIcon className={className} />,
+      'peer_reviewed_domain_specific': <AcademicCapIcon className={className} />,
+      'university_research_centers': <AcademicCapIcon className={className} />,
+      'think_tanks_global': <CloudIcon className={className} />,
+      'think_tanks_regional': <GlobeIcon className={className} />,
+      'professional_associations': <UsersIcon className={className} />,
+      'regulatory_authorities': <ScaleIcon className={className} />,
+      'central_banks_monetary': <CashIcon className={className} />,
+      'industry_reports_consulting': <ChecklistIcon className={className} />,
+      'industry_reports_market_research': <ChartIcon className={className} />,
+      'industry_associations': <OfficeIcon className={className} />,
+      'news_quality_international': <NewspaperIcon className={className} />,
+      'news_quality_business': <BriefcaseIcon className={className} />,
+      'news_specialized_trade': <BroadcastIcon className={className} />,
+      'multilateral_development_banks': <BankIcon className={className} />,
+      'ngo_advocacy_organizations': <HandshakeIcon className={className} />,
+      'policy_implementation_cases': <CogIcon className={className} />,
+      'comparative_international_studies': <RefreshIcon className={className} />,
+      'historical_policy_analysis': <HistoryIcon className={className} />,
+      'emerging_trends_future': <RocketIcon className={className} />,
+      'quantitative_data_metrics': <ChartIcon className={className} />,
+      'implementation_barriers_challenges': <WarningIcon className={className} />
     };
-    return iconMap[tier] || '📄';
+    return iconMap[tier] || <FileIcon className={className} />;
   };
 
   const getSourceTypeColor = (sourceType: string) => {
@@ -87,7 +114,7 @@ export default function CitationTile({ citation, showSourceTier = false }: Citat
       {/* Header */}
       <div className="flex items-start justify-between mb-4">
         <div className="flex-1 min-w-0">
-          <h3 className="text-lg font-semibold text-gray-100 mb-2 line-clamp-2 group-hover:text-gradient-from transition-colors">
+          <h3 className="text-lg font-semibold text-gray-100 mb-2 line-clamp-2 group-hover:text-gradient-to transition-colors">
             {citation.title || 'Untitled Document'}
           </h3>
           
@@ -122,7 +149,7 @@ export default function CitationTile({ citation, showSourceTier = false }: Citat
           {/* Tags */}
           <div className="flex flex-wrap gap-2 mb-4">
             {showSourceTier && citation.source_tier && (
-              <span className="inline-flex items-center gap-1 px-3 py-1 text-xs font-medium bg-gradient-to-r from-gradient-from/20 to-gradient-to/20 text-gradient-from rounded-full border border-gradient-from/30">
+              <span className="inline-flex items-center gap-1 px-3 py-1 text-xs font-medium bg-gradient-to-r from-gradient-from/20 to-gradient-to/20 text-gradient-to rounded-full border border-gradient-to/30">
                 {getTierIcon(citation.source_tier)}
                 {formatTierName(citation.source_tier)}
               </span>
@@ -171,7 +198,7 @@ export default function CitationTile({ citation, showSourceTier = false }: Citat
           {citation.url ? (
             <button
               onClick={() => handleLinkClick(citation.url)}
-              className="flex items-center gap-2 text-gradient-from hover:text-gradient-to transition-colors text-sm truncate max-w-full"
+              className="flex items-center gap-2 text-gradient-to hover:text-strategyand-accent transition-colors text-sm truncate max-w-full"
               title={`Open: ${citation.url}`}
             >
               <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">

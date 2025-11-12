@@ -60,7 +60,7 @@ export default function ImpactAnalysisForm({ onSubmit }: ImpactAnalysisFormProps
         </p>
       </div>
 
-      <div className="neural-card p-8 mb-8">
+      <div className="bg-dark-500 border border-dark-400 rounded-lg p-8 mb-8">
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
             <label htmlFor="query" className="block text-lg font-medium text-gray-200 mb-3">
@@ -71,16 +71,16 @@ export default function ImpactAnalysisForm({ onSubmit }: ImpactAnalysisFormProps
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder="e.g., Impact of renewable energy investment on GDP growth..."
-              className="w-full h-32 px-4 py-3 bg-dark-600/50 border border-dark-400/50 rounded-lg text-gray-100 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-gradient-from/50 focus:border-transparent resize-none"
+              className="w-full h-32 px-4 py-3 bg-dark-600 border border-dark-400 rounded-lg text-gray-100 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-strategyand-accent focus:border-strategyand-accent resize-none transition-colors duration-200"
               maxLength={1000}
               disabled={isSubmitting}
               required
             />
             <div className="flex justify-between items-center mt-2">
-              <p className="text-sm text-gray-500">
+              <p className="text-sm text-gray-300">
                 Describe the causal relationship you want to quantify
               </p>
-              <span className="text-sm text-gray-500">
+              <span className="text-sm text-gray-300 font-mono">
                 {query.length}/1000
               </span>
             </div>
@@ -89,7 +89,7 @@ export default function ImpactAnalysisForm({ onSubmit }: ImpactAnalysisFormProps
           <button
             type="submit"
             disabled={!query.trim() || isSubmitting}
-            className="w-full px-6 py-4 bg-gradient-to-r from-gradient-from to-gradient-to text-white font-medium rounded-lg hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+            className="w-full px-6 py-4 bg-strategyand-accent hover:opacity-90 text-white font-medium rounded-lg transition-opacity disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
           >
             {isSubmitting ? (
               <>
@@ -108,7 +108,7 @@ export default function ImpactAnalysisForm({ onSubmit }: ImpactAnalysisFormProps
         </form>
       </div>
 
-      <div className="neural-card p-6">
+      <div className="bg-dark-500 border border-dark-400 rounded-lg p-6">
         <h3 className="text-lg font-semibold text-gray-200 mb-4">Example Queries</h3>
         <div className="space-y-3">
           {exampleQueries.map((example, index) => (
@@ -116,7 +116,7 @@ export default function ImpactAnalysisForm({ onSubmit }: ImpactAnalysisFormProps
               key={index}
               onClick={() => setQuery(example)}
               disabled={isSubmitting}
-              className="w-full text-left p-3 bg-dark-600/30 hover:bg-dark-600/50 rounded-lg text-gray-300 text-sm transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full text-left p-3 bg-dark-600 hover:bg-dark-400/50 border border-dark-400 hover:border-dark-300 rounded-lg text-gray-300 text-sm transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {example}
             </button>
@@ -124,24 +124,24 @@ export default function ImpactAnalysisForm({ onSubmit }: ImpactAnalysisFormProps
         </div>
       </div>
 
-      <div className="mt-8 p-6 bg-dark-600/20 rounded-lg border border-dark-400/30">
-        <h4 className="text-md font-medium text-gray-200 mb-3">Analysis Process:</h4>
-        <div className="space-y-2 text-sm text-gray-400">
+      <div className="mt-8 p-6 bg-dark-500 rounded-lg border border-dark-400">
+        <h4 className="text-md font-medium text-strategyand-off-white mb-3">Analysis Process:</h4>
+        <div className="space-y-3 text-sm text-gray-200">
           <div className="flex items-start gap-3">
-            <span className="flex-shrink-0 w-6 h-6 bg-gradient-to-r from-gradient-from/30 to-gradient-via/30 rounded-full flex items-center justify-center text-xs font-bold text-white">1</span>
-            <span>Searches <strong>20 high-trust academic and official sources</strong> in parallel</span>
+            <span className="flex-shrink-0 w-7 h-7 bg-strategyand-accent/40 rounded-full flex items-center justify-center text-xs font-bold text-white border border-strategyand-accent/50">1</span>
+            <span>Searches <strong className="text-gray-100">20 high-trust academic and official sources</strong> in parallel</span>
           </div>
           <div className="flex items-start gap-3">
-            <span className="flex-shrink-0 w-6 h-6 bg-gradient-to-r from-gradient-from/30 to-gradient-via/30 rounded-full flex items-center justify-center text-xs font-bold text-white">2</span>
-            <span>Generates <strong>analytical framework</strong> with causal identification strategies</span>
+            <span className="flex-shrink-0 w-7 h-7 bg-strategyand-accent/40 rounded-full flex items-center justify-center text-xs font-bold text-white border border-strategyand-accent/50">2</span>
+            <span>Generates <strong className="text-gray-100">analytical framework</strong> with causal identification strategies</span>
           </div>
           <div className="flex items-start gap-3">
-            <span className="flex-shrink-0 w-6 h-6 bg-gradient-to-r from-gradient-from/30 to-gradient-via/30 rounded-full flex items-center justify-center text-xs font-bold text-white">3</span>
-            <span>Synthesizes findings with <strong>multiplier calculations</strong> and markdown formatting</span>
+            <span className="flex-shrink-0 w-7 h-7 bg-strategyand-accent/40 rounded-full flex items-center justify-center text-xs font-bold text-white border border-strategyand-accent/50">3</span>
+            <span>Synthesizes findings with <strong className="text-gray-100">multiplier calculations</strong> and markdown formatting</span>
           </div>
-          <div className="flex items-start gap-3 mt-4 pt-3 border-t border-dark-400/20">
-            <div className="w-2 h-2 bg-gradient-from rounded-full mt-2"></div>
-            <span className="text-xs">Runs in background - typically takes <strong>2-5 minutes</strong></span>
+          <div className="flex items-start gap-3 mt-4 pt-3 border-t border-dark-400/30">
+            <div className="w-2 h-2 bg-strategyand-accent rounded-full mt-2"></div>
+            <span className="text-xs text-gray-100">Runs in background - typically takes <strong>2-5 minutes</strong></span>
           </div>
         </div>
       </div>

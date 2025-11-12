@@ -8,50 +8,50 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        // Strategy& Design System - Professional & Corporate
+        // Strategy& Design System - Aligned with Brand Guidelines
         'dark': {
           50: '#4d4d4d',   // Medium gray
           100: '#404040',  // Charcoal gray
           200: '#383838',  // Dark charcoal
-          300: '#333333',  // Strategy& dark gray
+          300: '#333333',  // Strategy& dark gray (exact brand color)
           400: '#2b2b2b',  // Darker gray
           500: '#242424',  // Very dark gray
-          600: '#1a1a1a',  // Almost black
-          700: '#141414',  // Near black
-          800: '#0d0d0d',  // Deep black
-          900: '#000000',  // Pure black (Strategy& primary)
+          600: '#1a1a1a',  // Professional dark background
+          700: '#181818',  // Near black
+          800: '#141414',  // Deep black
+          900: '#0f0f0f',  // Almost black
         },
         'primary': {
-          50: '#fef2f2',
-          100: '#fee2e2',
-          200: '#fecaca',
-          300: '#fca5a5',
-          400: '#f87171',
-          500: '#ef4444',
-          600: '#dc2626',
-          700: '#A32020', // Strategy& Maroon
-          800: '#D93954', // Strategy& Bright Red
-          900: '#8B1A1A',
+          50: '#FFF5F5',   // Very light red tint
+          100: '#FEE2E2',  // Light red tint
+          200: '#FECACA',  // Pale red
+          300: '#FCA5A5',  // Light red
+          400: '#F87171',  // Medium red
+          500: '#EF4444',  // Bright red
+          600: '#DC2626',  // Strong red
+          700: '#A32020',  // Strategy& Maroon (exact brand color)
+          800: '#D93954',  // Strategy& Bright Red (exact brand color)
+          900: '#8B1A1A',  // Deep maroon
         },
         'neutral': {
-          50: '#fafafa',   // Strategy& light bg
-          100: '#f5f5f5',
-          200: '#e5e5e5',
-          300: '#d4d4d4',
-          400: '#a3a3a3',
-          500: '#737373',  // Strategy& gray
-          600: '#525252',
-          700: '#404040',
-          800: '#262626',  // Strategy& dark
-          900: '#171717',
+          50: '#FAFAFA',   // Strategy& light background
+          100: '#F5F5F5',  // Very light gray
+          200: '#F2F2F2',  // Strategy& light gray (exact brand color)
+          300: '#E5E5E5',  // Light gray
+          400: '#D4D4D4',  // Medium light gray
+          500: '#A3A3A3',  // Medium gray
+          600: '#737373',  // Dark gray
+          700: '#525252',  // Darker gray
+          800: '#333333',  // Strategy& dark gray (exact brand color)
+          900: '#1A1A1A',  // Almost black
         },
-        // Strategy& inspired gradient - Black to Maroon
+        // Strategy& Brand Gradients
         'gradient': {
-          from: '#000000',  // Pure Black
+          from: '#1a1a1a',  // Professional dark
           via: '#A32020',   // Strategy& Maroon
           to: '#D93954',    // Strategy& Bright Red
         },
-        // Status colors - Professional tones
+        // Status colors - Professional consulting tones
         'status': {
           'complete': '#22C55E',  // Green
           'running': '#F59E0B',   // Amber
@@ -59,14 +59,62 @@ module.exports = {
           'draft': '#9CA3AF',     // Gray
           'needs-input': '#D93954', // Strategy& Red
         },
-        // Strategy& Accent
-        'accent-red': '#D93954',
-        'accent-maroon': '#A32020',
+        // Strategy& Accent Colors (Exact Brand Specifications)
+        'strategyand': {
+          'accent': '#C52A2F',      // Primary accent red (exact brand)
+          'maroon': '#A32020',      // Legacy maroon support
+          'red': '#D93954',         // Secondary brand color
+          'off-white': '#F5F3EE',   // Text on dark backgrounds
+          'ink': '#111214',         // Card backgrounds
+          'hairline': '#232427',    // Minimal borders
+          'dark-gray': '#333333',   // Brand dark
+          'light-gray': '#F2F2F2',  // Brand light
+        },
+        // Monument Valley Design System - Analytics Components
+        'monument': {
+          'stone': '#4A4A4A',       // Dark gray for text on light backgrounds
+          'sand': '#F5F0E8',        // Light beige/sand background
+          'mint': '#7FC4B3',        // Mint green for success/positive
+          'blush': '#FFB893',       // Coral/blush for warnings/negative
+          'sky': '#A8D4FF',         // Sky blue for info
+          'cream': '#FFD8A5',       // Cream/amber for neutral
+        },
+      },
+      letterSpacing: {
+        'zen': '-0.02em',           // Monument Valley zen tracking
       },
       fontFamily: {
-        'sans': ['"Helvetica Neue"', 'Helvetica', 'Arial', 'sans-serif'],
-        'serif': ['"ITC Charter Com"', 'Georgia', '"Times New Roman"', 'serif'],
-        'mono': ['Monaco', 'Consolas', 'monospace'],
+        // Strategy& Typography System
+        'sans': [
+          'Inter',
+          '"Helvetica Neue"',
+          'Helvetica',
+          'Arial',
+          '-apple-system',
+          'BlinkMacSystemFont',
+          '"Segoe UI"',
+          'Roboto',
+          'sans-serif',
+          '"Apple Color Emoji"',
+          '"Segoe UI Emoji"',
+          '"Segoe UI Symbol"'
+        ],
+        'serif': [
+          'Spectral',
+          '"Libre Baskerville"',
+          '"ITC Charter"',
+          'Charter',
+          'Georgia',
+          '"Times New Roman"',
+          'serif'
+        ],
+        'mono': [
+          '"Söhne Mono"',
+          'Monaco',
+          '"Andale Mono"',
+          '"Ubuntu Mono"',
+          'monospace'
+        ],
       },
       fontSize: {
         'xs': ['0.75rem', { lineHeight: '1rem' }],
@@ -82,21 +130,22 @@ module.exports = {
       spacing: {
         '18': '4.5rem',
         '88': '22rem',
-        '128': '32rem',
+        '96': '24rem',    // 96px vertical sections
+        '128': '32rem',   // 128px vertical sections
+      },
+      maxWidth: {
+        // Strategy& Professional Max Widths
+        'strategy': '1120px',   // Min recommended width
+        'strategy-max': '1200px', // Max recommended width
       },
       animation: {
-        'fade-in': 'fadeIn 0.5s ease-in-out',
-        'slide-up': 'slideUp 0.3s ease-out',
-        'slide-in-right': 'slideInRight 0.3s ease-out',
-        'fade-in-up': 'fadeInUp 0.4s ease-out',
-        'pulse-soft': 'pulseSoft 2s ease-in-out infinite',
+        // Strategy& Professional Animations (280ms, calm, minimal)
+        'fade-in': 'fadeIn 280ms cubic-bezier(0.2, 0.6, 0.2, 1)',
+        'slide-up': 'slideUp 280ms cubic-bezier(0.2, 0.6, 0.2, 1)',
+        'slide-in-right': 'slideInRight 280ms cubic-bezier(0.2, 0.6, 0.2, 1)',
+        // Keep essential utility animations
         'shimmer': 'shimmer 2s linear infinite',
-        'float': 'float 6s ease-in-out infinite',
-        'neural-pulse': 'neuralPulse 3s ease-in-out infinite',
-        'data-flow': 'dataFlow 4s linear infinite',
-        'glow': 'glow 2s ease-in-out infinite alternate',
         'rotate-slow': 'rotateSlow 20s linear infinite',
-        'scale-breath': 'scaleBreath 4s ease-in-out infinite',
       },
       keyframes: {
         fadeIn: {
@@ -104,69 +153,21 @@ module.exports = {
           '100%': { opacity: '1' },
         },
         slideUp: {
-          '0%': { transform: 'translateY(10px)', opacity: '0' },
+          '0%': { transform: 'translateY(8px)', opacity: '0' },
           '100%': { transform: 'translateY(0)', opacity: '1' },
         },
         slideInRight: {
-          '0%': { transform: 'translateX(-10px)', opacity: '0' },
+          '0%': { transform: 'translateX(-8px)', opacity: '0' },
           '100%': { transform: 'translateX(0)', opacity: '1' },
-        },
-        fadeInUp: {
-          '0%': { transform: 'translateY(20px)', opacity: '0' },
-          '100%': { transform: 'translateY(0)', opacity: '1' },
-        },
-        pulseSoft: {
-          '0%, 100%': { opacity: '1' },
-          '50%': { opacity: '0.8' },
         },
         shimmer: {
           '0%': { backgroundPosition: '0% 50%' },
           '50%': { backgroundPosition: '100% 50%' },
           '100%': { backgroundPosition: '0% 50%' },
         },
-        float: {
-          '0%, 100%': { transform: 'translateY(0px)' },
-          '50%': { transform: 'translateY(-10px)' },
-        },
-        neuralPulse: {
-          '0%, 100%': {
-            boxShadow: '0 0 20px rgba(163, 32, 32, 0.3)',
-            transform: 'scale(1)',
-          },
-          '50%': {
-            boxShadow: '0 0 40px rgba(217, 57, 84, 0.4)',
-            transform: 'scale(1.02)',
-          },
-        },
-        dataFlow: {
-          '0%': { 
-            backgroundPosition: '0% 50%',
-            opacity: '0.5',
-          },
-          '50%': { 
-            backgroundPosition: '100% 50%',
-            opacity: '1',
-          },
-          '100%': { 
-            backgroundPosition: '200% 50%',
-            opacity: '0.5',
-          },
-        },
-        glow: {
-          '0%': {
-            boxShadow: '0 0 5px rgba(163, 32, 32, 0.3), 0 0 10px rgba(163, 32, 32, 0.2)',
-          },
-          '100%': {
-            boxShadow: '0 0 20px rgba(217, 57, 84, 0.5), 0 0 30px rgba(163, 32, 32, 0.3)',
-          },
-        },
         rotateSlow: {
           '0%': { transform: 'rotate(0deg)' },
           '100%': { transform: 'rotate(360deg)' },
-        },
-        scaleBreath: {
-          '0%, 100%': { transform: 'scale(1)' },
-          '50%': { transform: 'scale(1.05)' },
         },
       },
     },

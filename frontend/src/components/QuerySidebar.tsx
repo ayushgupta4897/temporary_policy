@@ -51,14 +51,14 @@ export default function QuerySidebar({
     switch (query.status) {
       case 'processing':
         return isStuck 
-          ? <AlertCircleIcon className="text-red-500 animate-pulse-soft" size="sm" />
+          ? <AlertCircleIcon className="text-red-500" size="sm" />
           : <ProcessingIcon className="text-amber-500" size="sm" />;
       case 'done':
         return <CheckCircleIcon className="text-green-500" size="sm" />;
       case 'failed':
         return <XCircleIcon className="text-red-500" size="sm" />;
       default:
-        return <div className="w-4 h-4 bg-neutral-200 rounded-full animate-pulse-soft" />;
+        return <div className="w-4 h-4 bg-neutral-200 rounded-full" />;
     }
   };
 
@@ -126,7 +126,7 @@ export default function QuerySidebar({
       <div className="p-5">
         {queries.length === 0 ? (
           <div className="text-center py-16">
-            <div className="bg-gradient-to-br from-neutral-100 to-neutral-200 w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-6 animate-pulse-soft">
+            <div className="bg-gradient-to-br from-neutral-100 to-neutral-200 w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-6">
               <PolicyIcon className="text-gray-500" size="xl" />
             </div>
             <h3 className="font-serif text-base text-gray-300 mb-2 font-medium">No analyses yet</h3>

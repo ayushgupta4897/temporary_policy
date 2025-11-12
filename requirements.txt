@@ -1,0 +1,36 @@
+# FastAPI Backend Requirements
+fastapi>=0.115.0
+uvicorn[standard]>=0.32.0
+pydantic>=2.9.0
+azure-data-tables>=12.5.0
+azure-storage-blob>=12.23.0
+python-multipart>=0.0.12
+python-dotenv>=1.0.0
+
+# Policy Drafter Dependencies
+openai>=2.6.0
+python-dotenv>=1.0.0
+pathlib2>=2.3.7
+httpx>=0.24.0
+
+# Additional Dependencies (if needed)
+gunicorn>=21.2.0
+requests>=2.31.0
+beautifulsoup4>=4.12.0
+python-dateutil>=2.8.0
+
+# News Horizon & Analytics Dependencies
+trafilatura>=1.12.0
+scikit-learn>=1.5.0
+scipy>=1.14.0
+networkx>=3.3
+numpy>=1.24.0
+pandas>=2.0.0
+
+# Policy Chat Dependencies
+python-ulid==3.0.0
+
+# New Relic APM
+newrelic>=9.0.0
+
+h2 >= 4.3.0

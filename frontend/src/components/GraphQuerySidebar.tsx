@@ -69,9 +69,9 @@ export default function GraphQuerySidebar({
   }
 
   return (
-    <aside className="w-80 border-r border-dark-300/50 bg-dark-700/30 flex flex-col">
+    <aside className="w-80 border-r border-dark-300/50 bg-dark-700/30 flex flex-col h-full">
       {/* Header */}
-      <div className="p-4 border-b border-dark-300/50">
+      <div className="p-4 border-b border-dark-300/50 flex-shrink-0">
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-lg font-semibold text-gray-200">Graph Queries</h2>
           <button
@@ -84,7 +84,7 @@ export default function GraphQuerySidebar({
             </svg>
           </button>
         </div>
-        
+
         <button
           onClick={() => setShowNewQuery(true)}
           className="w-full btn-primary py-2"
@@ -93,15 +93,18 @@ export default function GraphQuerySidebar({
         </button>
       </div>
 
-      {/* Query List */}
-      <div className="flex-1 overflow-y-auto">
+      {/* Query List - Fixed height with scroll */}
+      <div className="flex-1 overflow-y-auto min-h-0 relative scrollbar-thin scrollbar-thumb-dark-400 scrollbar-track-dark-700">
+        {/* Scroll indicator - top fade */}
+        <div className="sticky top-0 h-4 bg-gradient-to-b from-dark-700/30 to-transparent pointer-events-none z-10"></div>
+
         {queries.length === 0 ? (
           <div className="p-4 text-center text-gray-500">
             <p>No graph queries yet</p>
             <p className="text-sm mt-2">Create your first evidence graph</p>
           </div>
         ) : (
-          <div className="p-2 space-y-2">
+          <div className="p-2 space-y-2 pb-4">
             {queries.map((query) => (
               <div
                 key={query.queryId}
@@ -149,6 +152,9 @@ export default function GraphQuerySidebar({
             ))}
           </div>
         )}
+
+        {/* Scroll indicator - bottom fade */}
+        <div className="sticky bottom-0 h-4 bg-gradient-to-t from-dark-700/30 to-transparent pointer-events-none"></div>
       </div>
 
       {/* New Query Modal */}

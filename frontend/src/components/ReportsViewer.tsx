@@ -5,13 +5,14 @@ import MarkdownPreview from '@uiw/react-markdown-preview';
 import { Query, ReportContent, ReportInfo } from '@/types';
 import { apiService } from '@/services/api';
 import { generatePDF } from '../utils/pdfGenerator';
-import { 
-  ClipboardIcon, 
-  DocumentIcon, 
-  SearchIcon, 
-  ChartBarIcon, 
-  BeakerIcon, 
-  TrendingUpIcon, 
+import {
+  ClipboardIcon,
+  DocumentIcon,
+  SearchIcon,
+  ChartBarIcon,
+  ChartPieIcon,
+  BeakerIcon,
+  TrendingUpIcon,
   BookOpenIcon,
   DownloadIcon,
   ExclamationIcon,
@@ -19,6 +20,7 @@ import {
   ProcessingIcon
 } from '@/components/Icons';
 import { ReportSkeleton } from '@/components/LoadingSkeleton';
+import FloatingPolicyChat from '@/components/FloatingPolicyChat';
 
 interface ReportsViewerProps {
   query: Query;
@@ -112,9 +114,13 @@ export default function ReportsViewer({ query }: ReportsViewerProps) {
     }
   };
 
-  const availableReportTypes = REPORT_TYPES.filter(type => 
+  const availableReportTypes = REPORT_TYPES.filter(type =>
     availableReports.some(report => report.name === `${type.key}.md`)
   ).sort((a, b) => a.priority - b.priority);
+
+  // Check if analytics visualization is available (full mode + analytics report exists)
+  const hasAnalyticsVisualization = query.analysisMode === 'full' &&
+    availableReports.some(report => report.name === 'analytics_report.md');
 
   if (isLoadingReports) {
     return (
@@ -167,6 +173,15 @@ export default function ReportsViewer({ query }: ReportsViewerProps) {
             </p>
           </div>
           <div className="flex items-center gap-3">
+            {hasAnalyticsVisualization && (
+              <button
+                onClick={() => window.open(`/analytics/${query.queryId}`, '_blank')}
+                className="btn-primary group"
+              >
+                <ChartPieIcon className="mr-2 group-hover:scale-110 transition-transform" size="md" />
+                View Analytics
+              </button>
+            )}
             <button
               onClick={downloadAsPDF}
               className="btn-secondary group"
@@ -225,9 +240,9 @@ export default function ReportsViewer({ query }: ReportsViewerProps) {
                       : 'text-gray-400 hover:text-gray-100 hover:bg-dark-600/50'
                   }`}
                 >
-                  <Icon 
-                    className={activeReport === report.key ? 'text-white' : 'text-gray-500 group-hover:text-gray-300'} 
-                    size="sm" 
+                  <Icon
+                    className={activeReport === report.key ? 'text-white' : 'text-gray-500 group-hover:text-gray-300'}
+                    size="sm"
                   />
                   <span>{report.label}</span>
                 </button>
@@ -270,6 +285,9 @@ export default function ReportsViewer({ query }: ReportsViewerProps) {
           )}
         </div>
       </div>
+
+      {/* Floating Chat */}
+      <FloatingPolicyChat queryId={query.queryId} />
     </div>
   );
 }

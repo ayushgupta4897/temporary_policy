@@ -67,7 +67,7 @@ export default function ContextualSearchCard({ search, onSelect, onDelete }: Con
       {/* Header */}
       <div className="flex items-start justify-between mb-4">
         <div className="flex-1" onClick={() => onSelect(search)}>
-          <h3 className="text-lg font-semibold text-gray-100 mb-2 line-clamp-2 group-hover:text-gradient-from transition-colors">
+          <h3 className="text-lg font-semibold text-gray-100 mb-2 line-clamp-2 group-hover:text-gradient-to transition-colors">
             {search.displayTitle || search.query}
           </h3>
           <p className="text-sm text-gray-400 line-clamp-2">
@@ -105,7 +105,7 @@ export default function ContextualSearchCard({ search, onSelect, onDelete }: Con
         {search.status === 'done' && (
           <div className="grid grid-cols-2 gap-4 mb-4">
             <div className="bg-dark-600/30 rounded-lg p-3 border border-dark-400/20">
-              <div className="text-xl font-bold text-gradient-from">
+              <div className="text-xl font-bold text-gradient-to">
                 {search.uniqueCitations || 0}
               </div>
               <div className="text-xs text-gray-400">Citations Found</div>
@@ -178,7 +178,7 @@ export default function ContextualSearchCard({ search, onSelect, onDelete }: Con
         {/* View Results Indicator */}
         {search.status === 'done' && (
           <div className="mt-3 pt-3 border-t border-dark-400/20">
-            <div className="flex items-center justify-center text-gradient-from text-sm font-medium opacity-0 group-hover:opacity-100 transition-opacity">
+            <div className="flex items-center justify-center text-gradient-to text-sm font-medium opacity-0 group-hover:opacity-100 transition-opacity">
               <svg className="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />

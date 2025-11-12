@@ -2,6 +2,7 @@
 
 import { NewsCitation } from '@/types';
 import ScoreMeter from './ScoreMeter';
+import { NEWS_SCRAPE_THEME } from '@/config/theme';
 
 interface NewsCitationCardProps {
   citation: NewsCitation;
@@ -15,9 +16,14 @@ export default function NewsCitationCard({ citation }: NewsCitationCardProps) {
     return 'orange';
   };
 
+  const CARD = NEWS_SCRAPE_THEME.CITATION_CARD;
+  const TAGS = NEWS_SCRAPE_THEME.TAG_COLORS;
+  const ARTICLE = NEWS_SCRAPE_THEME.ARTICLE_TYPE;
+  const DATE = NEWS_SCRAPE_THEME.DATE_BADGE;
+  const HIERARCHY = NEWS_SCRAPE_THEME.HIERARCHY_BADGE;
+
   return (
-    <div className="group relative bg-gradient-to-br from-dark-600/60 to-dark-700/40 rounded-2xl overflow-hidden border border-dark-400/40 hover:border-gradient-from/40 hover:shadow-xl hover:shadow-gradient-from/5 transition-all duration-300">
-      <div className="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-gradient-from/60 via-gradient-via/40 to-gradient-to/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+    <div className={`${CARD.BACKGROUND} ${CARD.ROUNDED} overflow-hidden ${CARD.BORDER_WIDTH} ${CARD.BORDER} ${CARD.HOVER_BORDER} ${CARD.HOVER_BG} ${CARD.TRANSITION}`}>
       
       <div className={`flex ${citation.image_url ? 'flex-row' : 'flex-col'} gap-5 p-6`}>
         {citation.image_url && (
@@ -49,7 +55,7 @@ export default function NewsCitationCard({ citation }: NewsCitationCardProps) {
               </a>
               
               <div className="flex items-center gap-2 flex-wrap text-sm">
-                <span className="font-medium text-accent-red">{citation.publisher}</span>
+                <span className="font-medium text-strategyand-accent">{citation.publisher}</span>
 
                 {citation.author && (
                   <>
@@ -61,7 +67,7 @@ export default function NewsCitationCard({ citation }: NewsCitationCardProps) {
                 {citation.article_type && (
                   <>
                     <span className="text-gray-400">·</span>
-                    <span className="px-2 py-0.5 text-xs bg-dark-500/50 text-gray-300 rounded border border-dark-400/30">
+                    <span className={`px-2 py-0.5 text-xs ${ARTICLE.bg} ${ARTICLE.text} rounded border ${ARTICLE.border}`}>
                       {citation.article_type.replace(/_/g, ' ')}
                     </span>
                   </>
@@ -70,22 +76,22 @@ export default function NewsCitationCard({ citation }: NewsCitationCardProps) {
             </div>
             
             <div className="flex flex-col items-end gap-1 flex-shrink-0">
-              <span className="text-xs font-mono text-gray-500 bg-dark-500/40 px-2 py-1 rounded">
+              <span className={`text-xs font-mono ${DATE.text} ${DATE.bg} px-2 py-1 rounded`}>
                 {citation.date || citation.year}
               </span>
-              
+
               {(citation.hierarchy_level || citation.country || citation.region) && (
                 <div className="flex items-center gap-1.5 text-xs">
                   {citation.hierarchy_level && (
-                    <span className="px-2 py-0.5 bg-dark-500/40 text-gray-400 rounded capitalize">
+                    <span className={`px-2 py-0.5 ${HIERARCHY.bg} ${HIERARCHY.text} rounded capitalize`}>
                       {citation.hierarchy_level}
                     </span>
                   )}
                   {citation.country && (
-                    <span className="text-gray-500">📍 {citation.country}</span>
+                    <span className="text-gray-500">{citation.country}</span>
                   )}
                   {citation.region && !citation.country && (
-                    <span className="text-gray-500">🗺️ {citation.region}</span>
+                    <span className="text-gray-500">{citation.region}</span>
                   )}
                 </div>
               )}
@@ -99,22 +105,22 @@ export default function NewsCitationCard({ citation }: NewsCitationCardProps) {
           {(citation.region || citation.country || citation.topics || citation.industry) && (
             <div className="flex flex-wrap gap-2">
               {(Array.isArray(citation.region) ? citation.region : citation.region ? [citation.region] : []).map((r: string) => (
-                <span key={r} className="px-2 py-1 bg-accent-maroon/20 text-accent-red border border-accent-maroon/30 rounded-md text-xs">
+                <span key={r} className={`px-2 py-1 ${TAGS.REGION.bg} ${TAGS.REGION.text} border ${TAGS.REGION.border} rounded-md text-xs`}>
                   {r}
                 </span>
               ))}
               {(Array.isArray(citation.country) ? citation.country : citation.country ? [citation.country] : []).map((c: string) => (
-                <span key={c} className="px-2 py-1 bg-accent-red/20 text-red-300 border border-accent-red/30 rounded-md text-xs">
+                <span key={c} className={`px-2 py-1 ${TAGS.COUNTRY.bg} ${TAGS.COUNTRY.text} border ${TAGS.COUNTRY.border} rounded-md text-xs`}>
                   {c}
                 </span>
               ))}
               {citation.topics?.map((t: string) => (
-                <span key={t} className="px-2 py-1 bg-pink-500/20 text-pink-300 border border-pink-500/30 rounded-md text-xs">
+                <span key={t} className={`px-2 py-1 ${TAGS.TOPICS.bg} ${TAGS.TOPICS.text} border ${TAGS.TOPICS.border} rounded-md text-xs`}>
                   {t}
                 </span>
               ))}
               {citation.industry?.map((i: string) => (
-                <span key={i} className="px-2 py-1 bg-purple-500/20 text-purple-300 border border-purple-500/30 rounded-md text-xs">
+                <span key={i} className={`px-2 py-1 ${TAGS.INDUSTRY.bg} ${TAGS.INDUSTRY.text} border ${TAGS.INDUSTRY.border} rounded-md text-xs`}>
                   {i}
                 </span>
               ))}
@@ -123,7 +129,7 @@ export default function NewsCitationCard({ citation }: NewsCitationCardProps) {
 
           {citation.key_quote && (
             <div className="relative pl-4 py-2">
-              <div className="absolute left-0 top-0 bottom-0 w-0.5 bg-gradient-to-b from-gradient-from to-gradient-via rounded-full" />
+              <div className="absolute left-0 top-0 bottom-0 w-0.5 bg-strategyand-accent/60 rounded-full" />
               <p className="text-sm text-gray-400 italic leading-relaxed">
                 "{citation.key_quote}"
               </p>

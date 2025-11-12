@@ -2,58 +2,72 @@
 
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { PolicyIcon } from '@/components/Icons'
+import Image from 'next/image'
+import ConvergingParticles from '@/components/ConvergingParticles'
+import HowItWorksDropdown from '@/components/HowItWorksDropdown'
+import { UI_CONFIG } from '@/config'
 
-const ServiceCard = ({ 
-  title, 
-  description, 
-  icon, 
-  enabled = false, 
+const ServiceCard = ({
+  title,
+  description,
+  icon,
+  enabled = false,
   href = '#',
   beta = false
-}: { 
+}: {
   title: string
   description: string
   icon: React.ReactNode
   enabled?: boolean
-  href?: string 
+  href?: string
   beta?: boolean
 }) => {
   const content = (
     <div className={`
-      relative p-8 rounded-xl transition-all duration-300
+      relative p-8 rounded-lg flex flex-col h-full
       ${enabled
-        ? 'neural-card hover:shadow-xl hover:-translate-y-2 cursor-pointer'
-        : 'pwc-card-glass opacity-60 cursor-not-allowed'
+        ? 'strategyand-accent-card cursor-pointer group'
+        : 'strategyand-card-glass cursor-not-allowed'
       }
     `}>
-      <div className="flex flex-col items-center text-center space-y-4">
-        <div className={`
-          p-5 rounded-lg transition-all duration-300
-          ${enabled
-            ? 'bg-primary-700 text-white shadow-md'
-            : 'bg-dark-400/30 text-neutral-500'
-          }
-        `}>
-          {icon}
-        </div>
-        <h3 className={`text-xl font-semibold ${enabled ? 'text-neutral-50' : 'text-neutral-400'}`}>
-          {title}
-        </h3>
-        <p className={`text-sm leading-relaxed ${enabled ? 'text-neutral-200' : 'text-neutral-500'}`}>
-          {description}
-        </p>
-        {!enabled && (
-          <span className="absolute top-4 right-4 px-3 py-1 text-xs font-medium bg-dark-400/40 text-neutral-400 rounded-md border border-dark-300/30">
-            Coming Soon
-          </span>
-        )}
-        {enabled && beta && (
-          <span className="absolute top-4 right-4 px-3 py-1 text-xs font-medium bg-primary-700 text-white rounded-md shadow-sm">
-            Beta
-          </span>
-        )}
+      {/* Icon in red circular disk - properly sized */}
+      <div className={`
+        w-16 h-16 rounded-full flex items-center justify-center mb-6 flex-shrink-0
+        ${enabled ? 'bg-strategyand-accent text-white' : 'bg-gray-600 text-gray-400'}
+      `}>
+        {icon}
       </div>
+
+      {/* Title */}
+      <h4 className={`text-xl font-serif font-normal mb-3 tracking-tight ${enabled ? 'text-strategyand-off-white' : 'text-gray-400'}`}>
+        {title}
+        {beta && (
+          <span className="ml-3 text-xs px-2 py-1 bg-strategyand-accent/20 text-strategyand-accent rounded-full font-sans">
+            BETA
+          </span>
+        )}
+      </h4>
+
+      {/* Description - fixed height for consistency */}
+      <p className={`text-sm leading-relaxed mb-6 min-h-[3rem] ${enabled ? 'text-strategyand-off-white/60' : 'text-gray-500'}`}>
+        {description}
+      </p>
+
+      {/* Spacer to push CTA to bottom */}
+      <div className="flex-grow"></div>
+
+      {/* Single CTA */}
+      {enabled && (
+        <button className="text-sm font-medium text-strategyand-accent group-hover:opacity-80 transition-opacity text-left mt-auto">
+          Start Analysis →
+        </button>
+      )}
+
+      {!enabled && (
+        <span className="text-sm text-gray-500 mt-auto">
+          Coming Soon
+        </span>
+      )}
     </div>
   )
 
@@ -73,44 +87,86 @@ export default function Home() {
 
   return (
     <div className="min-h-screen flex flex-col relative overflow-hidden">
-      {/* Subtle Background Elements - Strategy& Style */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-20 left-20 w-32 h-32 bg-gradient-to-r from-primary-700/10 to-primary-800/10 rounded-full animate-float blur-xl"></div>
-        <div className="absolute top-40 right-32 w-24 h-24 bg-gradient-to-r from-primary-800/10 to-primary-700/10 rounded-full animate-float animation-delay-1000 blur-xl"></div>
-        <div className="absolute bottom-32 left-1/4 w-40 h-40 bg-gradient-to-r from-primary-700/10 to-dark-900/10 rounded-full animate-float animation-delay-2000 blur-xl"></div>
+      {/* Geometric Background Elements - Strategy& Style */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-20">
+        {/* Diagonal shapes inspired by Strategy& design */}
+        <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-br from-strategyand-maroon/20 to-transparent transform rotate-45 translate-x-48 -translate-y-48"></div>
+        <div className="absolute bottom-0 left-0 w-80 h-80 bg-gradient-to-tr from-strategyand-red/20 to-transparent transform -rotate-45 -translate-x-40 translate-y-40"></div>
       </div>
+
       {/* Header - Strategy& Style */}
-      <header className="px-8 py-6 border-b border-dark-300/50 backdrop-blur-sm bg-dark-800/50 relative z-10">
+      <header className="px-8 py-4 border-b border-dark-300/30 backdrop-blur-md bg-dark-600/40 relative z-10">
         <nav className="max-w-7xl mx-auto flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="p-3 rounded-lg bg-primary-700 shadow-md">
-              <PolicyIcon className="w-7 h-7 text-white" />
-            </div>
-            <span className="text-xl font-semibold text-neutral-50">Policy Intelligence Suite</span>
+          <div className="flex items-center gap-4">
+            {/* Strategy& Logo - Clickable Home Button */}
+            <Link
+              href="/"
+              className="flex items-center gap-3 group cursor-pointer hover:opacity-90 transition-opacity"
+              aria-label="Return to homepage"
+            >
+              <div className="w-12 h-12 bg-strategyand-maroon rounded flex items-center justify-center shadow-md group-hover:scale-105 transition-transform">
+                <span className="text-white font-serif text-3xl font-bold">&</span>
+              </div>
+              <div className="flex flex-col">
+                <span className="text-xl font-serif text-neutral-50">strategy&</span>
+                <span className="text-[10px] font-serif italic text-neutral-400">Part of the PwC network</span>
+              </div>
+            </Link>
           </div>
-          <button
-            onClick={() => router.push('/auth')}
-            className="btn-primary"
-          >
-            Sign In
-          </button>
+          <div className="flex items-center gap-4">
+            <HowItWorksDropdown />
+            <button
+              onClick={() => router.push('/auth')}
+              className="btn-primary px-8 py-2.5 text-sm font-medium"
+            >
+              Sign In
+            </button>
+          </div>
         </nav>
       </header>
 
       {/* Main Content */}
-      <main className="flex-1 px-8 py-16">
+      <main className="flex-1 px-8 py-12">
         <div className="max-w-7xl mx-auto">
-          {/* Hero Section - Strategy& Style */}
-          <div className="text-center mb-16 animate-fade-in relative z-10">
-            <h1 className="text-6xl font-bold mb-4 text-neutral-50">
-              Policy Intelligence Suite
-            </h1>
-            <p className="text-2xl text-neutral-200 mb-2 font-medium">Ideation Center</p>
-            <p className="text-xl text-primary-700 font-semibold">Strategy&</p>
-            <div className="mt-8 h-1 w-64 mx-auto rounded-full bg-gradient-to-r from-transparent via-primary-700 to-transparent"></div>
+          {/* Hero Section - Ideation Center Style */}
+          <div className="grid lg:grid-cols-2 gap-12 items-center mb-20 animate-fade-in relative z-10">
+            <div className="text-left">
+              <h1 className="font-serif text-5xl lg:text-6xl font-normal mb-6 text-neutral-50 leading-tight">
+                The Ideation Center
+              </h1>
+              <p className="text-xl lg:text-2xl text-neutral-200 mb-8 leading-relaxed font-light">
+                {UI_CONFIG.TAGLINE}
+              </p>
+              <div className="h-1 w-32 rounded-full bg-gradient-to-r from-strategyand-maroon to-strategyand-red mb-8"></div>
+              <p className="text-lg text-neutral-300 mb-8 leading-relaxed">
+                Where evidence meets ambition. An AI-powered intelligence architecture that transforms policy concepts into government-ready strategies through exhaustive research, comparative analysis across peer nations, and scenario modeling that anticipates the unintended. Built for leaders who demand both intellectual rigor and actionable clarity.
+              </p>
+              <button
+                onClick={() => router.push('/auth')}
+                className="btn-primary px-10 py-4 text-base font-medium shadow-lg hover:shadow-xl"
+              >
+                Get Started
+              </button>
+            </div>
+
+            {/* Converging Particles Visualization */}
+            <div className="relative h-96 lg:h-[500px]">
+              <div className="absolute inset-0 flex items-center justify-center">
+                <ConvergingParticles />
+              </div>
+            </div>
           </div>
 
           {/* Service Cards Grid */}
+          <div className="mb-12 text-center">
+            <h2 className="font-serif text-4xl font-normal text-neutral-50 mb-4">
+              {UI_CONFIG.APP_NAME}
+            </h2>
+            <p className="text-lg text-neutral-300">
+              Comprehensive tools for policy intelligence and strategic foresight
+            </p>
+          </div>
+
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto animate-slide-up">
             <ServiceCard
               title="Policy Bot"
@@ -123,7 +179,7 @@ export default function Home() {
               enabled={true}
               href="/auth"
             />
-            
+
             <ServiceCard
               title="System Compass"
               description="Maps complex social systems with data-driven causal relationships"
@@ -137,18 +193,6 @@ export default function Home() {
             />
 
             <ServiceCard
-              title="Contextual Web Search"
-              description="Extracts comprehensive evidence across 30 source tiers for research excellence"
-              icon={
-                <svg className="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
-                </svg>
-              }
-              enabled={true}
-              href="/auth?redirect=contextual-search"
-            />
-            
-            <ServiceCard
               title="Impact Evaluator"
               description="Quantifies the real-world impact of policies with evidence and scenarios"
               icon={
@@ -158,7 +202,6 @@ export default function Home() {
               }
               enabled={true}
               href="/auth?redirect=impact-analysis"
-              beta={true}
             />
 
             <ServiceCard
@@ -173,7 +216,45 @@ export default function Home() {
               href="/auth?redirect=news-scrape"
               beta={true}
             />
-            
+
+            <ServiceCard
+              title="Contextual Web Search"
+              description="Extracts comprehensive evidence across 30 source tiers for research excellence"
+              icon={
+                <svg className="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
+                </svg>
+              }
+              enabled={true}
+              href="/auth?redirect=contextual-search"
+            />
+
+            <ServiceCard
+              title="Dynamic Systems Modeler"
+              description="Model intervention scenarios with custom taxonomy and evidence-based impact analysis"
+              icon={
+                <svg className="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                </svg>
+              }
+              enabled={true}
+              href="/auth?redirect=dsm"
+              beta={true}
+            />
+
+            <ServiceCard
+              title="Foresight Radar"
+              description="Scans emerging trends to anticipate risks and opportunities with high-trust sources and STEEP-G analysis"
+              icon={
+                <svg className="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9.348 14.651a3.75 3.75 0 010-5.303m5.304 0a3.75 3.75 0 010 5.303m-7.425 2.122a6.75 6.75 0 010-9.546m9.546 0a6.75 6.75 0 010 9.546M5.106 18.894c-3.808-3.808-3.808-9.98 0-13.789m13.788 0c3.808 3.808 3.808 9.981 0 13.79M12 12h.008v.007H12V12zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
+                </svg>
+              }
+              enabled={true}
+              href="/auth?redirect=foresight-radar"
+              beta={true}
+            />
+
             <ServiceCard
               title="Pulse Analyzer"
               description="Captures public and media sentiment to gauge policy resonance"
@@ -184,24 +265,20 @@ export default function Home() {
               }
               enabled={false}
             />
-            
-            <ServiceCard
-              title="Foresight Radar"
-              description="Scans emerging trends to anticipate risks and opportunities in policy"
-              icon={
-                <svg className="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9.348 14.651a3.75 3.75 0 010-5.303m5.304 0a3.75 3.75 0 010 5.303m-7.425 2.122a6.75 6.75 0 010-9.546m9.546 0a6.75 6.75 0 010 9.546M5.106 18.894c-3.808-3.808-3.808-9.98 0-13.789m13.788 0c3.808 3.808 3.808 9.981 0 13.79M12 12h.008v.007H12V12zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
-                </svg>
-              }
-              enabled={false}
-            />
           </div>
         </div>
       </main>
 
       {/* Footer - Strategy& Style */}
-      <footer className="px-8 py-6 border-t border-dark-300/40 text-center text-neutral-400 text-sm backdrop-blur-sm bg-dark-800/50 relative z-10">
-        <p>© 2024 Policy Intelligence Suite. All rights reserved.</p>
+      <footer className="px-8 py-8 border-t border-dark-300/30 text-center backdrop-blur-sm bg-dark-600/40 relative z-10">
+        <div className="max-w-7xl mx-auto">
+          <div className="mb-4 flex justify-center items-center gap-2">
+            <span className="text-neutral-400 font-serif text-sm">strategy&</span>
+            <span className="text-neutral-500">|</span>
+            <span className="text-neutral-500 text-xs italic">Part of the PwC network</span>
+          </div>
+          <p className="text-neutral-400 text-sm">© 2024 {UI_CONFIG.APP_SUBTITLE}. All rights reserved.</p>
+        </div>
       </footer>
     </div>
   )

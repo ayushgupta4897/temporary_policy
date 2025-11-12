@@ -2,8 +2,12 @@
 
 import { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
+import Link from 'next/link';
 import { apiService } from '@/services/api';
-import { PolicyIcon } from '@/components/Icons';
+import { authUtils } from '@/utils/auth';
+import { UI_CONFIG } from '@/config';
+import ParticleSphere from '@/components/ParticleSphere';
+import { LockIcon } from '@/components/icons/TabIcons';
 
 function AuthForm() {
   const [password, setPassword] = useState('');
@@ -13,6 +17,32 @@ function AuthForm() {
   const searchParams = useSearchParams();
   const redirect = searchParams.get('redirect');
 
+  // Check if already authenticated
+  useEffect(() => {
+    if (authUtils.isAuthenticated()) {
+      // Already authenticated, redirect to appropriate page
+      handleRedirect();
+    }
+  }, []);
+
+  const handleRedirect = () => {
+    if (redirect === 'graph-builder') {
+      router.push('/graph-builder');
+    } else if (redirect === 'contextual-search') {
+      router.push('/contextual-search');
+    } else if (redirect === 'impact-analysis') {
+      router.push('/impact-analysis');
+    } else if (redirect === 'news-scrape') {
+      router.push('/news-scrape');
+    } else if (redirect === 'foresight-radar') {
+      router.push('/foresight-radar');
+    } else if (redirect === 'dsm') {
+      router.push('/dsm');
+    } else {
+      router.push('/dashboard');
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
@@ -20,23 +50,13 @@ function AuthForm() {
 
     try {
       const response = await apiService.authenticate(password);
-      
+
       if (response.success) {
-        localStorage.setItem('isAuthenticated', 'true');
-        localStorage.setItem('policy-drafter-auth', 'true'); // Keep for backward compatibility
-        
-        // Handle redirect parameter
-        if (redirect === 'graph-builder') {
-          router.push('/graph-builder');
-        } else if (redirect === 'contextual-search') {
-          router.push('/contextual-search');
-        } else if (redirect === 'impact-analysis') {
-          router.push('/impact-analysis');
-        } else if (redirect === 'news-scrape') {
-          router.push('/news-scrape');
-        } else {
-          router.push('/dashboard');
-        }
+        // Set authentication with 1-day expiry
+        authUtils.setAuth();
+
+        // Redirect to appropriate page
+        handleRedirect();
       } else {
         setError(response.message || 'Authentication failed');
       }
@@ -47,105 +67,130 @@ function AuthForm() {
     }
   };
 
+  const getPageTitle = () => {
+    if (redirect === 'graph-builder') return 'System Compass';
+    if (redirect === 'contextual-search') return 'Contextual Web Search';
+    if (redirect === 'impact-analysis') return 'Impact Evaluator';
+    if (redirect === 'news-scrape') return 'News Horizon';
+    if (redirect === 'foresight-radar') return 'Foresight Radar';
+    if (redirect === 'dsm') return 'Dynamic Systems Modeler';
+    return UI_CONFIG.APP_NAME;
+  };
+
+  const getPageDescription = () => {
+    if (redirect === 'graph-builder') return 'Map complex social systems with data-driven causal relationships';
+    if (redirect === 'contextual-search') return 'Extract comprehensive evidence across 30 source tiers for research excellence';
+    if (redirect === 'foresight-radar') return 'Scan emerging trends with high-trust sources and strategic foresight';
+    if (redirect === 'impact-analysis') return 'Quantify the real-world impact of policies with evidence-based multiplier calculations';
+    if (redirect === 'news-scrape') return 'Exhaustive news intelligence with AI-powered tag-based filtering and analysis';
+    if (redirect === 'dsm') return 'Model intervention scenarios with custom taxonomy and evidence-based delta analysis';
+    return UI_CONFIG.TAGLINE;
+  };
+
   return (
     <div className="min-h-screen relative overflow-hidden">
-      {/* Floating AI Elements */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-20 left-20 w-32 h-32 bg-gradient-to-r from-gradient-from/20 to-gradient-via/20 rounded-full animate-float blur-xl"></div>
-        <div className="absolute top-60 right-32 w-24 h-24 bg-gradient-to-r from-gradient-via/20 to-gradient-to/20 rounded-full animate-float animation-delay-1000 blur-xl"></div>
-        <div className="absolute bottom-32 left-1/3 w-40 h-40 bg-gradient-to-r from-gradient-to/20 to-gradient-from/20 rounded-full animate-float animation-delay-2000 blur-xl"></div>
+      {/* Geometric Background Elements - Strategy& Style */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-20">
+        <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-br from-strategyand-maroon/20 to-transparent transform rotate-45 translate-x-48 -translate-y-48"></div>
+        <div className="absolute bottom-0 left-0 w-80 h-80 bg-gradient-to-tr from-strategyand-red/20 to-transparent transform -rotate-45 -translate-x-40 translate-y-40"></div>
       </div>
+
       <div className="min-h-screen flex items-center justify-center p-4 relative z-10">
-        <div className="w-full max-w-md">
-          {/* Header */}
-          <div className="text-center mb-8 animate-fade-in">
-            <div className="inline-block p-5 bg-gradient-to-br from-gradient-from to-gradient-via rounded-2xl mb-6 shadow-2xl animate-neural-pulse">
-              <PolicyIcon className="text-white" size="xl" />
-            </div>
-            <h1 className="text-4xl lg:text-5xl font-bold mb-4 animate-scale-breath">
-              <span style={{
-                display: 'inline-block',
-                background: 'linear-gradient(to right, #A32020, #D93954, #D93954)',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-                backgroundClip: 'text',
-                paddingLeft: '4px',
-                paddingRight: '4px'
-              }}>
-                {redirect === 'graph-builder'
-                  ? 'System Compass'
-                  : redirect === 'contextual-search'
-                  ? 'Contextual Web Search'
-                  : redirect === 'impact-analysis'
-                  ? 'Impact Evaluator'
-                  : redirect === 'news-scrape'
-                  ? 'News Horizon'
-                  : 'Policy Bot'}
-              </span>
-            </h1>
-            <p className="text-gray-300 text-lg font-medium mb-4">
-              {redirect === 'graph-builder'
-                ? 'Map complex social systems with data-driven causal relationships'
-                : redirect === 'contextual-search'
-                ? 'Extract comprehensive evidence across 30 source tiers for research excellence'
-                : redirect === 'impact-analysis'
-                ? 'Quantify the real-world impact of policies with evidence-based multiplier calculations'
-                : redirect === 'news-scrape'
-                ? 'Exhaustive news intelligence with AI-powered tag-based filtering and analysis'
-                : 'AI-powered policy research, benchmarking and implementation planning for smarter policy decisions'}
-            </p>
-            <p className="text-sm text-gray-400 max-w-md mx-auto">
-              Analyze global best practices, assess sentiment and perception, and generate actionable policy options with roadmaps and KPIs
-            </p>
-            <div className="mt-6 data-flow-bg h-1 w-48 mx-auto rounded-full"></div>
-          </div>
-
-          {/* Authentication Card */}
-          <div className="neural-card p-8 animate-slide-up shadow-2xl">
-            <form onSubmit={handleSubmit} className="space-y-6">
-              <div>
-                <label htmlFor="password" className="block text-gray-300 mb-3 text-sm font-medium">
-                  Access Credentials
-                </label>
-                <input
-                  id="password"
-                  type="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  className="w-full px-4 py-3 bg-dark-500/80 backdrop-blur-sm border border-dark-300/50 rounded-xl focus:ring-2 focus:ring-gradient-from focus:border-gradient-from text-gray-100 placeholder-gray-400 transition-all shadow-sm"
-                  placeholder="Enter access password"
-                  required
-                  disabled={isLoading}
-                />
-              </div>
-
-              {error && (
-                <div className="bg-status-error/20 border border-status-error/40 text-status-error px-4 py-3 rounded-xl text-sm backdrop-blur-sm">
-                  {error}
-                </div>
-              )}
-
-              <button
-                type="submit"
-                disabled={isLoading || !password}
-                className="btn-primary w-full py-4 disabled:opacity-50 disabled:cursor-not-allowed"
+        <div className="w-full max-w-5xl">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            {/* Left: Branding & Particle Sphere */}
+            <div className="text-center lg:text-left">
+              {/* Strategy& Logo - Clickable Home Button */}
+              <Link
+                href="/"
+                className="flex items-center gap-3 justify-center lg:justify-start mb-8 group cursor-pointer hover:opacity-90 transition-opacity inline-flex"
+                aria-label="Return to homepage"
               >
-                {isLoading ? (
-                  <>
-                    <div className="loading-spinner mr-2"></div>
-                    Authenticating...
-                  </>
-                ) : (
-                  'Access Platform'
-                )}
-              </button>
-            </form>
+                <div className="w-16 h-16 bg-strategyand-maroon rounded flex items-center justify-center shadow-lg group-hover:scale-105 transition-transform">
+                  <span className="text-white font-serif text-4xl font-bold">&</span>
+                </div>
+                <div className="flex flex-col">
+                  <span className="text-2xl font-serif text-neutral-50">strategy&</span>
+                  <span className="text-xs font-serif italic text-neutral-400">Part of the PwC network</span>
+                </div>
+              </Link>
 
-            <div className="mt-8 pt-6 border-t border-dark-400/30">
-              <p className="text-xs text-gray-400 text-center flex items-center justify-center gap-2">
-                Authorized access only • Secure environment
-                <span className="animate-neural-pulse">🔒</span>
+              <h1 className="font-serif text-4xl lg:text-5xl font-normal mb-4 text-neutral-50 leading-tight">
+                {getPageTitle()}
+              </h1>
+
+              <p className="text-lg text-neutral-300 mb-6 leading-relaxed">
+                {getPageDescription()}
               </p>
+
+              <div className="h-1 w-32 rounded-full bg-gradient-to-r from-strategyand-maroon to-strategyand-red mb-8 mx-auto lg:mx-0"></div>
+
+              <p className="text-sm text-neutral-400 mb-8">
+                {UI_CONFIG.APP_SUBTITLE} • Secure access platform
+              </p>
+
+              {/* Particle Sphere */}
+              <div className="hidden lg:block relative h-64 mt-8">
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <ParticleSphere />
+                </div>
+              </div>
+            </div>
+
+            {/* Right: Authentication Form */}
+            <div className="strategyand-card-elevated p-8 shadow-2xl">
+              <h2 className="font-serif text-2xl font-normal text-neutral-50 mb-6">
+                Access Platform
+              </h2>
+
+              <form onSubmit={handleSubmit} className="space-y-6">
+                <div>
+                  <label htmlFor="password" className="block text-neutral-300 mb-2 text-sm font-medium">
+                    Credentials
+                  </label>
+                  <input
+                    id="password"
+                    type="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    className="input"
+                    placeholder="Enter access password"
+                    required
+                    disabled={isLoading}
+                  />
+                  <p className="mt-2 text-xs text-neutral-500">
+                    Session valid for 24 hours after authentication
+                  </p>
+                </div>
+
+                {error && (
+                  <div className="bg-status-error/20 border border-status-error/40 text-status-error px-4 py-3 rounded-xl text-sm">
+                    {error}
+                  </div>
+                )}
+
+                <button
+                  type="submit"
+                  disabled={isLoading || !password}
+                  className="btn-primary w-full py-4 disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {isLoading ? (
+                    <>
+                      <div className="loading-spinner mr-2"></div>
+                      Authenticating...
+                    </>
+                  ) : (
+                    'Sign In'
+                  )}
+                </button>
+              </form>
+
+              <div className="mt-8 pt-6 border-t border-dark-400/30">
+                <p className="text-xs text-neutral-400 text-center flex items-center justify-center gap-2">
+                  Authorized access only • Secure environment
+                  <LockIcon className="w-3 h-3 text-strategyand-maroon" />
+                </p>
+              </div>
             </div>
           </div>
         </div>
@@ -156,16 +201,12 @@ function AuthForm() {
 
 function LoadingFallback() {
   return (
-    <div className="min-h-screen relative overflow-hidden">
-      <div className="min-h-screen flex items-center justify-center p-4 relative z-10">
-        <div className="w-full max-w-md">
-          <div className="text-center mb-8">
-            <div className="inline-block p-5 bg-gradient-to-br from-gradient-from to-gradient-via rounded-2xl mb-6 shadow-2xl">
-              <PolicyIcon className="text-white" size="xl" />
-            </div>
-            <div className="loading-spinner mx-auto"></div>
-          </div>
+    <div className="min-h-screen flex items-center justify-center">
+      <div className="text-center">
+        <div className="w-12 h-12 bg-strategyand-maroon rounded flex items-center justify-center shadow-md mb-4 mx-auto">
+          <span className="text-white font-serif text-3xl font-bold">&</span>
         </div>
+        <div className="loading-spinner mx-auto"></div>
       </div>
     </div>
   );
