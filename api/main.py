@@ -51,7 +51,7 @@ from handlers.analytics_handler import router as analytics_router
 from handlers.foresight_radar_handler import router as foresight_radar_router
 from handlers.dsm_handler import router as dsm_router
 
-VERSION = "1.1.1"
+VERSION = "1.1.2"
 
 # Initialize FastAPI app
 app = FastAPI(
@@ -64,14 +64,28 @@ app = FastAPI(
 # If monitoring is needed, uncomment the initialization code above (lines 10-25)
 # and use newrelic-admin run-program instead of direct wrapping
 
+# CORS Configuration - Allow frontend to access API
+# FRONTEND_URL is loaded from environment variable (set in Azure Container Apps or .env.azure)
+FRONTEND_URL = os.getenv("FRONTEND_URL", "")
+
+# Build allowed origins list
+allowed_origins = [
+    "http://localhost:3000",  # Local development
+    "https://ca-policy-frontend.happycliff-41c6de54.eastus.azurecontainerapps.io",  # Production frontend
+    "https://ca-policy-frontend.whitestone-31d90b86.eastus.azurecontainerapps.io",  # Old production frontend (for backward compatibility)
+]
+
+# Add production frontend URL if configured
+if FRONTEND_URL:
+    allowed_origins.append(FRONTEND_URL)
+    print(f"✓ CORS configured for production frontend: {FRONTEND_URL}")
+else:
+    print("⚠ FRONTEND_URL not set - only localhost allowed. Set FRONTEND_URL in .env.azure for production.")
+
 # Add CORS middleware
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "http://localhost:3000",  # React dev server
-        "https://ca-policy-frontend.happycliff-41c6de54.eastus.azurecontainerapps.io",  # Production frontend
-        "https://ca-policy-frontend.whitestone-31d90b86.eastus.azurecontainerapps.io",  # Old production frontend (for backward compatibility)
-    ],
+    allow_origins=allowed_origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

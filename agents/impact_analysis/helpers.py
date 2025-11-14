@@ -130,7 +130,12 @@ def format_citations_for_analysis(citations: List[Dict]) -> str:
 
     formatted = ""
     for i, citation in enumerate(citations, 1):
-        formatted += f"[{i}] {citation.get(FIELD_TITLE, DEFAULT_TITLE)}\n"
+        # Use ULID-based reference (short form: first 8 chars) for stable citation tracking
+        citation_id = citation.get('citation_id', '')
+        citation_ref = f"CITE-{citation_id[:8]}" if citation_id else str(i)
+
+        formatted += f"[{citation_ref}] {citation.get(FIELD_TITLE, DEFAULT_TITLE)}\n"
+        formatted += f"    ID: {citation_id}\n"
         formatted += f"    Source: {citation.get(FIELD_PUBLISHER, DEFAULT_PUBLISHER)} ({citation.get(FIELD_YEAR, DEFAULT_YEAR)})\n"
         if citation.get(FIELD_DOI):
             formatted += f"    DOI: {citation.get(FIELD_DOI)}\n"

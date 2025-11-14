@@ -42,7 +42,7 @@ PRODUCTION_BACKEND_URL = os.environ.get("BACKEND_URL", "")
 MAX_WORKERS = 2
 
 # Timeout configuration (in minutes)
-QUERY_TIMEOUT_MINUTES = 180
+QUERY_TIMEOUT_MINUTES = 240
 MONITOR_CHECK_INTERVAL_SECONDS = 300  # 5 minutes
 STUCK_QUERY_CHECK_CYCLES = 6  # Every 6 cycles (30 minutes)
 

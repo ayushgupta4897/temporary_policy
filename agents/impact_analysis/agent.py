@@ -4,6 +4,7 @@ from pathlib import Path
 from typing import List, Dict, Any
 from datetime import datetime
 import concurrent.futures
+from ulid import ULID
 
 sys.path.append(str(Path(__file__).parent.parent.parent))
 from config.app_config import PolicyDrafterConfig
@@ -224,7 +225,13 @@ class ImpactAnalyzer:
             )
 
             content = response.choices[0].message.content.strip()
-            return parse_json_from_text(content)
+            citations = parse_json_from_text(content)
+
+            # Assign stable ULID to each citation for reference tracking
+            for citation in citations:
+                citation['citation_id'] = str(ULID())
+
+            return citations
 
         except Exception as e:
             print(f"✗ Search error: {str(e)[:100]}")

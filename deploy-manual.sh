@@ -219,6 +219,17 @@ step2_deploy_backend() {
         --query properties.configuration.ingress.fqdn \
         --output tsv)
 
+    # Configure BACKEND_URL on the backend container itself (for HTML visualization generation)
+    if [ ! -z "$BACKEND_URL" ]; then
+        print_step "Configuring BACKEND_URL environment variable on backend container..."
+        az containerapp update \
+            --name "${AZURE_CONTAINER_APP_NAME}-backend" \
+            --resource-group ${AZURE_RESOURCE_GROUP} \
+            --set-env-vars BACKEND_URL="https://${BACKEND_URL}" \
+            --output none
+        print_success "Backend URL configured: https://${BACKEND_URL}"
+    fi
+
     print_header "✅ BACKEND DEPLOYED SUCCESSFULLY"
     echo ""
     echo -e "${BOLD}Backend URL:${NC} ${GREEN}https://${BACKEND_URL}${NC}"

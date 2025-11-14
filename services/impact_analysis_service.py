@@ -18,7 +18,7 @@ from repositories.impact_analysis_repository import ImpactAnalysisRepository
 
 # Thread pool and batch configuration
 BATCH_SIZE = 10
-ASYNC_TIMEOUT_SECONDS = 1800  # 30 minutes
+ASYNC_TIMEOUT_SECONDS = 3600  # 40 minutes
 MAX_CONCURRENT_ANALYSES = 5
 
 # Default list limit

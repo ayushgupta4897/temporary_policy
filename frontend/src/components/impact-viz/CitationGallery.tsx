@@ -4,6 +4,7 @@
  */
 
 interface Citation {
+  citation_id?: string;  // ULID for stable reference tracking
   title: string;
   publisher: string;
   year: string;
@@ -54,7 +55,7 @@ export function CitationGallery({ title, subtitle, insight, data }: CitationGall
           const qualityStyle = qualityColors[citation.quality_score];
           return (
             <div
-              key={index}
+              key={citation.citation_id || index}
               className="bg-dark-500 border border-dark-400 rounded-lg p-5 hover:border-dark-300 transition-all duration-200"
             >
               {/* Header */}

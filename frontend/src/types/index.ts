@@ -136,6 +136,7 @@ export interface ImpactAnalysisResponse {
 }
 
 export interface ImpactCitation {
+  citation_id?: string;  // ULID for stable reference tracking
   title: string;
   url: string;
   publisher: string;

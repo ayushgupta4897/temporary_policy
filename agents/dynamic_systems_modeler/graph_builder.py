@@ -388,7 +388,7 @@ Extract top 3-5 citations and return ONLY a JSON array with this structure:
             cleaning_prompt = f"""You are a JSON repair specialist. Your ONLY task is to extract and clean JSON from potentially malformed text.
 
 INPUT TEXT (may have explanations, code blocks, or syntax errors):
-{content[:4000]}
+{content}
 
 INSTRUCTIONS:
 1. Extract the JSON object from the text (find the main {{...}} structure)
@@ -413,8 +413,7 @@ Return the cleaned JSON now:"""
 
             response = self.openai_manager.chat_completion(
                 model=PolicyDrafterConfig.GPT_5_NANO,
-                messages=[{"role": "user", "content": cleaning_prompt}],
-                max_completion_tokens=5000
+                messages=[{"role": "user", "content": cleaning_prompt}]
             )
 
             cleaned = response.choices[0].message.content.strip()
@@ -434,22 +433,6 @@ Return the cleaned JSON now:"""
         # Step 2: Clean up content
         json_str = cleaned_content.strip()
 
-        # Remove markdown code blocks
-        if JSON_CODE_BLOCK_START in json_str:
-            start = json_str.find(JSON_CODE_BLOCK_START) + len(JSON_CODE_BLOCK_START)
-            end = json_str.find(JSON_CODE_BLOCK_END, start)
-            json_str = json_str[start:end].strip()
-
-        # Find JSON object
-        if "{" in json_str:
-            start_idx = json_str.find("{")
-            end_idx = json_str.rfind("}") + 1
-            json_str = json_str[start_idx:end_idx]
-
-        # Sanitize control characters
-        import re
-        json_str = re.sub(r'[\x00-\x08\x0b-\x0c\x0e-\x1f\x7f]', '', json_str)
-
         # Parse JSON
         try:
             graph = json.loads(json_str)
@@ -458,9 +441,7 @@ Return the cleaned JSON now:"""
         except json.JSONDecodeError as e:
             print(f"❌ JSON parse error: {e}")
             print(f"Error at line {e.lineno}, column {e.colno}")
-            print(f"First 500 chars: {json_str[:500]}")
-            print(f"Context around error (char {max(0, e.pos-100)} to {min(len(json_str), e.pos+100)}):")
-            print(json_str[max(0, e.pos-100):min(len(json_str), e.pos+100)])
+            print(f"Last 500 chars: {json_str[-500:]}")
 
             # Save malformed JSON for debugging
             import tempfile

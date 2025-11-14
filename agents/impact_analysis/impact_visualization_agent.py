@@ -70,6 +70,7 @@ CHART TYPE SCHEMAS & SELECTION GUIDE:
    {{
      "citations": [
        {{
+         "citation_id": "string (ULID - REQUIRED for stable reference tracking)",
          "title": "string",
          "publisher": "string",
          "year": "string",
@@ -188,7 +189,7 @@ EXTRACTION RULES:
 
 DATA EXTRACTION PRIORITIES:
 - **Executive Summary**: Extract overall multiplier, confidence level, evidence quality
-- **Citations**: Map ALL citations to citation-cards with quality badges
+- **Citations**: Map ALL citations to citation-cards with quality badges. CRITICAL: Preserve citation_id from CITATIONS DATA (JSON) for each citation to maintain stable reference tracking.
 - **Section 3 (Impact Multipliers)**: Extract min/max/average for bar-comparison and time periods for timeline
 - **Section 2 (Causal Mechanisms)**: Convert pathway descriptions or ASCII diagrams to Mermaid syntax
 - **Section 4 (Evidence Quality)**: Extract quality scores for radar chart

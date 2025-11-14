@@ -13,7 +13,7 @@ from config.app_config import PolicyDrafterConfig
 POLL_INTERVAL = 10
 MAX_WAIT_TIME = 3600
 QUEUE_TIMEOUT = 120
-MAX_RETRIES = 1
+MAX_RETRIES = 3
 
 class OpenAIClientManager:
     """
@@ -141,7 +141,7 @@ class OpenAIClientManager:
         system_message: str,
         user_message: str,
         reasoning: Optional[Dict] = None,
-        _attempt: int = 1,
+        _attempt: int = MAX_RETRIES,
         **kwargs
     ) -> Any:
         attempt_prefix = f"[Attempt {_attempt}/{MAX_RETRIES}] " if _attempt > 1 else ""

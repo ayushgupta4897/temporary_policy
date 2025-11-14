@@ -324,7 +324,7 @@ export default function ImpactAnalysisViewer({
     return (
       <div className="space-y-6">
         {analysis.citations.map((citation, index) => (
-          <div key={index} className="bg-dark-500 border border-dark-400 rounded-lg p-6 hover:border-dark-300 transition-all duration-200">
+          <div key={citation.citation_id || index} className="bg-dark-500 border border-dark-400 rounded-lg p-6 hover:border-dark-300 transition-all duration-200">
             <div className="flex items-start justify-between mb-4">
               <h3 className="text-lg font-semibold text-strategyand-off-white flex-1">
                 {citation.title}

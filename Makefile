@@ -147,19 +147,23 @@ logs-follow:
 	@echo "$(YELLOW)Following logs (Ctrl+C to stop)...$(NC)"
 	@tail -f backend.log frontend.log 2>/dev/null || echo "No log files found. Start the servers first."
 
+# Load Azure configuration from .env.azure
+include .env.azure
+export
+
 # Stream live logs from Azure Container App backend
 logs-azure:
 	@echo "$(GREEN)Streaming live logs from Azure backend container...$(NC)"
 	@echo "$(YELLOW)Press Ctrl+C to stop$(NC)"
 	@echo ""
-	@az containerapp logs show --name ca-policy-backend --resource-group rg-policy-intelligence-ai --follow
+	@az containerapp logs show --name $(AZURE_BACKEND_APP_NAME) --resource-group $(AZURE_RESOURCE_GROUP) --follow
 
 # Stream live logs from Azure Container App frontend
 logs-azure-frontend:
 	@echo "$(GREEN)Streaming live logs from Azure frontend container...$(NC)"
 	@echo "$(YELLOW)Press Ctrl+C to stop$(NC)"
 	@echo ""
-	@az containerapp logs show --name ca-policy-frontend --resource-group rg-policy-intelligence-ai --follow
+	@az containerapp logs show --name $(AZURE_FRONTEND_APP_NAME) --resource-group $(AZURE_RESOURCE_GROUP) --follow
 
 # Test API health endpoint
 test-api:

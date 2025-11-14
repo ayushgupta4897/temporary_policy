@@ -20,10 +20,24 @@ sys.path.append(str(parent_dir))
 # ============================================================================
 
 # Load from environment variables (set by Azure Container Apps or .env.azure)
-OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY")
+# SECURITY: No fallback values - fail fast if environment variables are not set
+# This prevents accidental use of hardcoded/outdated credentials
+try:
+    OPENAI_API_KEY = os.environ["OPENAI_API_KEY"]
+except KeyError:
+    raise ValueError(
+        "OPENAI_API_KEY environment variable is required. "
+        "Please set it in your .env.azure file or Azure Container App secrets."
+    )
 
 # Azure Storage Configuration
-AZURE_STORAGE_CONNECTION_STRING = os.environ.get("AZURE_STORAGE_CONNECTION_STRING")
+try:
+    AZURE_STORAGE_CONNECTION_STRING = os.environ["AZURE_STORAGE_CONNECTION_STRING"]
+except KeyError:
+    raise ValueError(
+        "AZURE_STORAGE_CONNECTION_STRING environment variable is required. "
+        "Please set it in your .env.azure file or Azure Container App secrets."
+    )
 
 class PolicyDrafterConfig:
     """Main configuration for the policy drafting system."""

@@ -39,7 +39,7 @@ class OpenAIDeepResearchClient:
         self._tasks: Dict[str, ResearchTask] = {}
         self._task_lock = threading.Lock()
     
-    def make_request(self, user_query, system_message=None, model=None, enable_reasoning=True, timeout_minutes=180):
+    def make_request(self, user_query, system_message=None, model=None, enable_reasoning=True, timeout_minutes=240):
         """Make a deep research request using background mode with polling."""
         try:
             selected_model = self.DEFAULT_MODEL if not model else model
