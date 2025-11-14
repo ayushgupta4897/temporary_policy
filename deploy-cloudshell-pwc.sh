@@ -398,8 +398,8 @@ main() {
     check_prerequisites
     verify_resources
     build_images_with_acr
-    deploy_container_apps
-    get_deployment_urls
+    #deploy_container_apps
+    #get_deployment_urls
 
     # Show deployment details
     if [ ! -z "${DOCKER_IMAGE_TAG:-}" ]; then
